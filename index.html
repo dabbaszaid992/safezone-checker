@@ -400,7 +400,7 @@ const PLATS=[
      {label:'Reels Header',px:'268px',pct:'14%',y:0,h:268},
      {label:'Caption + CTA + Nav',px:'672px',pct:'35%',y:1248,h:672},
      {label:'Side Margins',px:'65px',pct:'6%',x:0,w:65,both:true},
-     {label:'Action Icons',px:'216px',pct:'20%',x:864,w:216,lineOnly:true},
+     {label:'Action Icons',px:'216px',pct:'20%',x:864,w:216,reelRight:true},
    ],
    tips:[{i:'🎯',t:'Right 20% = action icons — never put logos there'},{i:'📝',t:'Bottom 35% = caption + CTA bar'},{i:'⚠️',t:'Boosting Story as Reel? Use stricter zone'},{i:'💡',t:'Safe area: 1010×1280 px centered'}],
   },
@@ -427,8 +427,7 @@ const PLATS=[
    zones:[
      {label:'Navigation Tabs',px:'270px',pct:'14%',y:0,h:270},
      {label:'Caption + CTA + Nav',px:'384px',pct:'20%',y:1536,h:384},
-     {label:'Action Icons',px:'228px',pct:'21%',x:852,w:228,iconSpots:true,
-      spots:[{y:250,h:180},{y:490,h:180},{y:690,h:180},{y:890,h:180},{y:1090,h:160}]},
+     {label:'Action Icons',px:'228px',pct:'21%',x:852,w:228},
    ],
    tips:[{i:'🚫',t:'Right 21% = icons always — no brand here'},{i:'📝',t:'Bottom 20% always unsafe'},{i:'🎵',t:'Music disc sits bottom-right'},{i:'🎯',t:'Keep visuals left-center'}],
   },
@@ -611,31 +610,18 @@ function renderZones(){
       });
       sRight=Math.max(sRight,DW-zx);
 
-    }else if(z.lineOnly){
-      // IG Reels: just a thin vertical line at the left edge of the icon column
-      // No fill, no boxes — just marks the boundary cleanly
-      const zx=(z.x||0)*scX,zw=z.w*scX;
-      // Very faint fill so designer can see the zone area
-      svg.appendChild(se('rect',{x:zx,y:0,width:zw,height:DH,
-        fill:'rgba(139,92,246,0.06)'}));
-      // Clean left-edge line — the actual boundary
-      svg.appendChild(se('line',{
-        x1:zx,y1:0,x2:zx,y2:DH,
-        stroke:'rgba(139,92,246,0.75)','stroke-width':'2','stroke-dasharray':'6 4'
-      }));
-      // Small arrow label at mid-height to indicate direction
-      const midY=DH*0.5;
-      const arrowSz=Math.round(zw*0.18);
-      // Arrow pointing left (← stay out of this zone)
-      svg.appendChild(se('line',{
-        x1:zx+arrowSz,y1:midY,x2:zx+zw*0.7,y2:midY,
-        stroke:'rgba(139,92,246,0.5)','stroke-width':'1.5','stroke-dasharray':'none'
-      }));
-      svg.appendChild(se('polygon',{
-        points:`${zx+2},${midY} ${zx+arrowSz+2},${midY-arrowSz*0.5} ${zx+arrowSz+2},${midY+arrowSz*0.5}`,
-        fill:'rgba(139,92,246,0.55)'
-      }));
-      sRight=Math.max(sRight,DW-zx);
+    }else if(z.reelRight){
+      // IG Reels right icon column:
+      // Screenshot shows: NO fill blocks, NO boxes on the icons.
+      // Just a very faint red tint on the right column (same as top/bottom zones)
+      // + the safe zone dashed white border naturally notches inward here.
+      const zx=(z.x||0)*scX, zw=z.w*scX;
+
+      // Same red fill + stripe as other unsafe zones — consistent visual language
+      drawRect(svg, zx, 0, zw, DH, ZC.bottom, 'p-bottom');
+
+      // Mark for safe zone border calculation
+      sRight = Math.max(sRight, DW - zx);
 
     }else{
       const x=(z.x||0)*scX,y=(z.y||0)*scY;
