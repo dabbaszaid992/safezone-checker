@@ -611,16 +611,11 @@ function renderZones(){
       sRight=Math.max(sRight,DW-zx);
 
     }else if(z.reelRight){
-      // IG Reels right icon column:
-      // Screenshot shows: NO fill blocks, NO boxes on the icons.
-      // Just a very faint red tint on the right column (same as top/bottom zones)
-      // + the safe zone dashed white border naturally notches inward here.
-      const zx=(z.x||0)*scX, zw=z.w*scX;
-
-      // Same red fill + stripe as other unsafe zones — consistent visual language
-      drawRect(svg, zx, 0, zw, DH, ZC.bottom, 'p-bottom');
-
-      // Mark for safe zone border calculation
+      // IG Reels right column:
+      // NO fill, NO overlay, NO boxes — completely transparent
+      // Only sRight is set so the white dashed safe zone border
+      // naturally stops at the icon column edge, creating the notch shape
+      const zx=(z.x||0)*scX;
       sRight = Math.max(sRight, DW - zx);
 
     }else{
