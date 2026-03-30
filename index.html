@@ -3,191 +3,268 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
-<title>SafeZone Checker</title>
+<title>SafeZone — Ad Safe Zone Checker</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-html,body{height:100%;font-family:'Inter',system-ui,sans-serif;background:#ECEEF2;-webkit-font-smoothing:antialiased;}
+html,body{height:100%;font-family:'Inter',system-ui,sans-serif;background:#F0F1F5;-webkit-font-smoothing:antialiased;}
 body{display:flex;flex-direction:column;overflow:hidden;}
 button{font-family:inherit;cursor:pointer;}
 input[type=file]{display:none;}
-::-webkit-scrollbar{width:3px;height:3px;}
-::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px;}
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:4px;}
 
-/* ── TOP BAR ── */
-#bar{background:#fff;border-bottom:1px solid #e0e2e8;flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,.06);}
-.bar-row1{height:52px;display:flex;align-items:center;padding:0 14px;gap:10px;}
-.logo{display:flex;align-items:center;gap:8px;flex:1;}
-.logo-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#5865f2,#9333ea);
-  display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
-.logo-name{font-size:14px;font-weight:700;letter-spacing:-.02em;color:#111;}
-.logo-tag{font-size:10px;color:#999;font-weight:400;}
+/* ════════════════════════════════════
+   TOP BAR
+════════════════════════════════════ */
+#bar{
+  background:#fff;border-bottom:1px solid #e5e7eb;flex-shrink:0;
+  box-shadow:0 1px 3px rgba(0,0,0,.06);
+}
+.bar-row1{
+  height:54px;display:flex;align-items:center;padding:0 16px;gap:12px;
+}
+/* Logo */
+.logo{display:flex;align-items:center;gap:10px;flex:1;text-decoration:none;}
+.logo-icon{
+  width:32px;height:32px;border-radius:9px;flex-shrink:0;
+  background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#a855f7 100%);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 8px rgba(99,102,241,.35);
+}
+.logo-text{display:flex;flex-direction:column;line-height:1.2;}
+.logo-name{font-size:14px;font-weight:700;letter-spacing:-.03em;color:#111;}
+.logo-sub{font-size:9.5px;color:#9ca3af;font-weight:400;letter-spacing:.01em;}
+
+/* Action buttons */
 .bar-actions{display:flex;gap:8px;align-items:center;flex-shrink:0;}
-
-.tbtn{display:flex;align-items:center;gap:5px;padding:7px 12px;
-  border-radius:8px;border:1.5px solid #e0e2e8;background:#fff;
-  font-size:12px;font-weight:500;color:#666;cursor:pointer;white-space:nowrap;transition:all .12s;}
-.tbtn.on{border-color:#5865f250;background:#5865f20a;color:#5865f2;font-weight:600;}
-
-.newbtn{display:flex;align-items:center;gap:5px;padding:7px 11px;
-  border-radius:8px;border:1.5px solid #e0e2e8;background:#fff;
-  font-size:12px;font-weight:500;color:#555;cursor:pointer;white-space:nowrap;}
-
-/* Upload button — acts as a label wrapping hidden input */
+.tbtn{
+  display:flex;align-items:center;gap:5px;padding:7px 13px;
+  border-radius:8px;border:1.5px solid #e5e7eb;background:#fff;
+  font-size:12px;font-weight:500;color:#6b7280;cursor:pointer;
+  white-space:nowrap;transition:all .15s;
+}
+.tbtn:hover{background:#f9fafb;}
+.tbtn.on{border-color:#6366f155;background:#6366f108;color:#6366f1;font-weight:600;}
+.newbtn{
+  display:flex;align-items:center;gap:5px;padding:7px 12px;
+  border-radius:8px;border:1.5px solid #e5e7eb;background:#fff;
+  font-size:12px;font-weight:500;color:#6b7280;cursor:pointer;white-space:nowrap;
+}
 #upload-label{
   display:flex;align-items:center;gap:6px;padding:8px 16px;
-  border-radius:8px;background:#111;color:#fff;font-size:12px;
-  font-weight:600;border:none;cursor:pointer;white-space:nowrap;
-  user-select:none;-webkit-user-select:none;
+  border-radius:8px;background:#111;color:#fff;
+  font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;
+  transition:background .15s;user-select:none;-webkit-user-select:none;
 }
+#upload-label:hover{background:#222;}
 #upload-label:active{background:#333;}
 #upload-label input{display:none;}
 
-/* Platform tabs */
-.bar-row2{display:flex;gap:6px;padding:0 14px 10px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+/* Platform tabs row */
+.bar-row2{
+  display:flex;gap:5px;padding:0 16px 11px;
+  overflow-x:auto;-webkit-overflow-scrolling:touch;
+}
 .bar-row2::-webkit-scrollbar{display:none;}
-.ptab{padding:6px 13px;border-radius:20px;border:1.5px solid #e0e2e8;
-  background:#fff;font-size:12px;font-weight:500;color:#555;
-  cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .12s;}
+.ptab{
+  display:flex;align-items:center;gap:6px;
+  padding:6px 12px;border-radius:20px;
+  border:1.5px solid #e5e7eb;background:#fff;
+  font-size:11.5px;font-weight:500;color:#6b7280;
+  cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .15s;
+}
+.ptab:hover{background:#f9fafb;}
 .ptab.on{font-weight:700;}
+.ptab-logo{width:14px;height:14px;flex-shrink:0;}
 
-/* ── BODY ── */
+/* ════════════════════════════════════
+   BODY + STAGE
+════════════════════════════════════ */
 #body{flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0;}
-
-/* ── STAGE ── */
-#stage{flex:1;display:flex;align-items:center;justify-content:center;
-  overflow:hidden;position:relative;min-height:0;padding:12px;}
-#stage-inner{display:flex;align-items:center;justify-content:center;gap:14px;width:100%;height:100%;}
+#stage{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  overflow:hidden;position:relative;min-height:0;padding:16px;
+}
+#stage-inner{display:flex;align-items:center;justify-content:center;gap:16px;width:100%;height:100%;}
 
 /* Canvas card */
-#ccard{position:relative;flex-shrink:0;border-radius:10px;overflow:hidden;line-height:0;
-  box-shadow:0 16px 40px rgba(0,0,0,.22),0 4px 12px rgba(0,0,0,.12);}
+#ccard{
+  position:relative;flex-shrink:0;
+  border-radius:12px;overflow:hidden;line-height:0;
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.22),
+    0 4px 16px rgba(0,0,0,.12),
+    0 0 0 1px rgba(0,0,0,.06);
+}
 #l-media{display:block;}
 #l-zones{position:absolute;inset:0;pointer-events:none;}
 
-/* ── UPLOAD STATE — fixed tap ── */
+/* ── UPLOAD / DROP ZONE ── */
 #dz{
-  position:absolute;inset:0;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:14px;background:#18181c;border-radius:inherit;
-  /* pointer-events handled by the label inside, not the div itself */
+  position:absolute;inset:0;border-radius:inherit;
+  background:#111;overflow:hidden;
+}
+/* Subtle gradient glow on bg */
+#dz::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 30% 40%,rgba(99,102,241,.15) 0%,transparent 70%),
+             radial-gradient(ellipse at 70% 70%,rgba(168,85,247,.1) 0%,transparent 60%);
 }
 #dz-label{
-  /* This label covers the entire dropzone and handles the tap */
-  position:absolute;inset:0;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:14px;cursor:pointer;z-index:2;
+  position:absolute;inset:0;z-index:2;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
 }
 #dz-label input{display:none;}
-.dz-ring{
-  width:56px;height:56px;border-radius:16px;
-  background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.14);
-  display:flex;align-items:center;justify-content:center;pointer-events:none;
+.dz-icon-wrap{
+  width:60px;height:60px;border-radius:18px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;
+  box-shadow:0 4px 16px rgba(0,0,0,.3);
 }
 .dz-t{font-size:14px;font-weight:600;color:#fff;text-align:center;pointer-events:none;}
-.dz-s{font-size:11.5px;color:rgba(255,255,255,.32);text-align:center;pointer-events:none;}
-.dz-badge{font-size:10.5px;color:rgba(255,255,255,.22);text-align:center;pointer-events:none;}
+.dz-s{font-size:11px;color:rgba(255,255,255,.35);text-align:center;pointer-events:none;}
+.dz-formats{
+  display:flex;gap:5px;flex-wrap:wrap;justify-content:center;pointer-events:none;
+}
+.dz-fmt{
+  font-size:10px;font-weight:500;color:rgba(255,255,255,.35);
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
+  padding:2px 7px;border-radius:4px;font-family:'Courier New',monospace;
+}
+.dz-lock{font-size:10.5px;color:rgba(255,255,255,.2);text-align:center;pointer-events:none;}
 
-/* ── ZONE LABELS panel ── */
+/* ── ZONE LABELS ── */
 #labels-panel{display:flex;flex-direction:column;gap:7px;flex-shrink:0;}
 .zlbl{
-  display:flex;align-items:center;gap:7px;padding:6px 11px 6px 9px;
-  background:rgba(255,255,255,.97);border:1.5px solid #e0e2e8;
-  border-radius:8px;font-size:11.5px;font-weight:500;color:#333;
-  box-shadow:0 1px 4px rgba(0,0,0,.07);white-space:nowrap;
+  display:flex;align-items:center;gap:8px;
+  padding:7px 12px 7px 10px;
+  background:#fff;border:1.5px solid #e5e7eb;
+  border-radius:10px;font-size:11.5px;font-weight:500;color:#374151;
+  box-shadow:0 1px 3px rgba(0,0,0,.06),0 1px 8px rgba(0,0,0,.03);
+  white-space:nowrap;transition:all .15s;
 }
+.zlbl:hover{box-shadow:0 2px 8px rgba(0,0,0,.1);}
 .zdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.zlbl-name{flex:1;}
-.zpct{font-size:10px;font-family:'Courier New',monospace;padding:1px 5px;border-radius:3px;font-weight:600;}
+.zlbl-name{flex:1;font-size:11px;}
+.zpct{
+  font-size:10px;font-family:'Courier New',monospace;font-weight:700;
+  padding:2px 6px;border-radius:4px;
+}
 
-/* ── INFO PANEL ── */
-#info-panel{flex-shrink:0;background:#fff;border-top:1px solid #e0e2e8;overflow-y:auto;}
-.info-inner{padding:14px 16px;display:flex;gap:14px;align-items:stretch;}
+/* ════════════════════════════════════
+   INFO PANEL
+════════════════════════════════════ */
+#info-panel{
+  flex-shrink:0;background:#fff;border-top:1px solid #e5e7eb;overflow-y:auto;
+}
+.info-inner{padding:14px 18px;display:flex;gap:16px;align-items:stretch;}
 
-.spec-card{background:#f8f9fc;border:1px solid #e8eaf0;border-radius:10px;padding:12px 14px;flex-shrink:0;}
-.spec-plat{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
-.spec-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+/* Spec card */
+.spec-card{
+  background:linear-gradient(135deg,#f8f9ff 0%,#f3f4f8 100%);
+  border:1px solid #e5e7eb;border-radius:12px;
+  padding:13px 15px;flex-shrink:0;min-width:200px;
+}
+.spec-header{display:flex;align-items:center;gap:9px;margin-bottom:11px;}
+.spec-logo{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .spec-name{font-size:13px;font-weight:700;color:#111;}
 .spec-table{width:100%;border-collapse:collapse;}
-.spec-table td{padding:3px 0;font-size:11.5px;color:#555;vertical-align:top;}
-.spec-table td:first-child{font-weight:600;color:#333;padding-right:10px;white-space:nowrap;}
-.spec-table td:last-child{font-family:'Courier New',monospace;color:#5865f2;}
+.spec-table tr+tr td{padding-top:4px;}
+.spec-table td{font-size:11px;color:#6b7280;vertical-align:top;padding:2px 0;}
+.spec-table td:first-child{font-weight:600;color:#374151;padding-right:12px;white-space:nowrap;width:80px;}
+.spec-table td:last-child{font-family:'Courier New',monospace;color:#6366f1;font-weight:500;}
 
+/* Zone breakdown */
 .zone-breakdown{flex:1;min-width:0;}
-.zb-title{font-size:10.5px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
+.panel-title{font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.08em;margin-bottom:9px;}
 .zb-rows{display:flex;flex-direction:column;gap:5px;}
-.zb-row{display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:6px;border:1px solid transparent;}
+.zb-row{
+  display:flex;align-items:center;gap:8px;
+  padding:6px 9px;border-radius:8px;border:1px solid transparent;
+  transition:all .12s;
+}
 .zb-rdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
-.zb-label{font-size:11px;font-weight:500;color:#333;flex:1;min-width:80px;}
-.zb-px{font-size:10px;color:#777;font-family:'Courier New',monospace;}
-.zb-pct{font-size:10px;font-weight:700;padding:1px 5px;border-radius:3px;white-space:nowrap;margin-left:auto;}
+.zb-label{font-size:11px;font-weight:500;flex:1;min-width:80px;}
+.zb-px{font-size:10px;color:#9ca3af;font-family:'Courier New',monospace;}
+.zb-pct{font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;white-space:nowrap;margin-left:auto;}
 
-.tips-col{flex-shrink:0;padding:0 0 0 14px;border-left:1px solid #e8eaf0;}
-.tips-title{font-size:10.5px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
-.tip-item{display:flex;gap:6px;margin-bottom:5px;font-size:11px;color:#555;line-height:1.45;}
-.tip-icon{font-size:11px;flex-shrink:0;margin-top:1px;}
+/* Tips */
+.tips-col{flex-shrink:0;padding:0 0 0 16px;border-left:1px solid #e5e7eb;}
+.tip-item{display:flex;gap:7px;margin-bottom:6px;font-size:11px;color:#6b7280;line-height:1.5;}
+.tip-icon{font-size:12px;flex-shrink:0;margin-top:1px;}
 
-/* ── MOBILE ── */
+/* ════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════ */
 @media(max-width:600px){
-  .logo-tag{display:none;}
+  .bar-row1{height:50px;padding:0 12px;}
+  .logo-sub{display:none;}
   .bar-row2{padding:0 12px 9px;gap:5px;}
-  .ptab{padding:5px 11px;font-size:11.5px;}
-  #stage{padding:8px 10px;}
+  .ptab{padding:5px 10px;font-size:11px;}
+  #stage{padding:10px;}
   #stage-inner{flex-direction:column;align-items:center;}
-  #labels-panel{flex-direction:row;flex-wrap:wrap;justify-content:center;width:100%;}
-  .zlbl{font-size:11px;}
-  .info-inner{flex-direction:column;gap:10px;padding:10px 12px;}
+  #labels-panel{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:5px;width:100%;}
+  .zlbl{font-size:10.5px;padding:5px 9px 5px 8px;}
+  .info-inner{flex-direction:column;gap:10px;padding:11px 13px;}
   .spec-card{min-width:0;}
-  .tips-col{border-left:none;border-top:1px solid #e8eaf0;padding:10px 0 0;width:100%;}
+  .tips-col{border-left:none;border-top:1px solid #e5e7eb;padding:10px 0 0;width:100%;}
   .tips-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;}
   .tip-item{margin-bottom:0;}
-  #info-panel{max-height:200px;}
+  #info-panel{max-height:190px;}
 }
 @media(min-width:601px) and (max-width:900px){
   #stage-inner{flex-direction:row;align-items:center;}
-  #labels-panel{flex-direction:column;width:165px;}
+  #labels-panel{flex-direction:column;width:168px;}
   .info-inner{flex-direction:column;gap:10px;}
-  .tips-col{border-left:none;border-top:1px solid #e8eaf0;padding:10px 0 0;}
-  #info-panel{max-height:180px;}
+  .tips-col{border-left:none;border-top:1px solid #e5e7eb;padding:10px 0 0;}
+  #info-panel{max-height:175px;}
 }
 @media(min-width:901px){
   #stage-inner{flex-direction:row;align-items:center;}
-  #labels-panel{flex-direction:column;width:190px;}
-  .tips-col{width:200px;}
+  #labels-panel{flex-direction:column;width:195px;}
+  .tips-col{width:205px;}
   #info-panel{max-height:200px;}
 }
 </style>
 </head>
 <body>
 
+<!-- ════ TOP BAR ════ -->
 <div id="bar">
   <div class="bar-row1">
     <div class="logo">
-      <div class="logo-mark">🛡️</div>
-      <div>
+      <div class="logo-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z" fill="white" opacity=".9"/>
+          <path d="M9 12l2 2 4-4" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="logo-text">
         <div class="logo-name">SafeZone</div>
-        <div class="logo-tag">Ad Safe Zone Checker</div>
+        <div class="logo-sub">Ad Safe Zone Checker</div>
       </div>
     </div>
     <div class="bar-actions">
       <button class="tbtn on" id="btn-z" onclick="toggleZones()">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
         </svg>
-        <span>Zones</span>
+        Zones
       </button>
       <button class="newbtn" id="btn-new" style="display:none;" onclick="resetFile()">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
           <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/>
-        </svg>New
+        </svg>
+        New
       </button>
-      <!-- Upload button: label wraps hidden input — works on mobile -->
       <label id="upload-label">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
           <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/>
           <path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/>
         </svg>
-        Upload
+        Upload Creative
         <input type="file" accept="image/jpeg,image/png,image/webp,video/mp4,video/webm,video/quicktime"
           onchange="handleFile(this.files[0]);this.value=''">
       </label>
@@ -196,35 +273,44 @@ input[type=file]{display:none;}
   <div class="bar-row2" id="ptabs"></div>
 </div>
 
+<!-- ════ BODY ════ -->
 <div id="body">
   <div id="stage">
     <div id="stage-inner">
       <!-- Canvas -->
       <div id="ccard">
         <canvas id="l-media"></canvas>
-        <!-- Drop zone — label covers full area for tap -->
+        <!-- Upload state -->
         <div id="dz">
           <label id="dz-label">
             <input type="file" accept="image/jpeg,image/png,image/webp,video/mp4,video/webm,video/quicktime"
               onchange="handleFile(this.files[0]);this.value=''">
-            <div class="dz-ring">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.8">
+            <div class="dz-icon-wrap">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="1.6">
                 <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/>
                 <path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/>
               </svg>
             </div>
             <p class="dz-t">Tap to upload your creative</p>
-            <p class="dz-s">JPG · PNG · WebP · MP4 · WebM</p>
-            <p class="dz-badge">🔒 Everything stays in your browser</p>
+            <p class="dz-s">or drag & drop here</p>
+            <div class="dz-formats">
+              <span class="dz-fmt">JPG</span>
+              <span class="dz-fmt">PNG</span>
+              <span class="dz-fmt">WebP</span>
+              <span class="dz-fmt">MP4</span>
+              <span class="dz-fmt">WebM</span>
+            </div>
+            <p class="dz-lock">🔒 Stays in your browser — never uploaded</p>
           </label>
         </div>
         <svg id="l-zones" xmlns="http://www.w3.org/2000/svg"></svg>
       </div>
-      <!-- Zone labels -->
+      <!-- Labels -->
       <div id="labels-panel"></div>
     </div>
   </div>
 
+  <!-- Info panel -->
   <div id="info-panel">
     <div class="info-inner" id="info-inner"></div>
   </div>
@@ -233,199 +319,231 @@ input[type=file]{display:none;}
 <script>
 'use strict';
 
-// ═══════════════════════════════════════════════════════
-// ZONE COLOR SYSTEM
-// Each zone type gets a distinct color so designers
-// instantly see what's what — not everything is red
-// ═══════════════════════════════════════════════════════
-const ZONE_COLORS = {
-  // Top UI bars (headers, nav) → Orange/Amber
-  top:    { fill:'rgba(251,146,60,0.42)',  stripe:'rgba(251,100,20,0.16)',  border:'rgba(251,146,60,0.70)',  dot:'#f97316', bg:'#fff7ed', bdr:'#fed7aa', txt:'#c2410c', pctBg:'#ffedd5', pctTxt:'#c2410c' },
-  // Bottom CTA / caption bars → Red/Rose
-  bottom: { fill:'rgba(239,68,68,0.42)',   stripe:'rgba(220,38,38,0.16)',   border:'rgba(239,68,68,0.72)',   dot:'#ef4444', bg:'#fef2f2', bdr:'#fecaca', txt:'#b91c1c', pctBg:'#fee2e2', pctTxt:'#b91c1c' },
-  // Right action icon columns → Purple/Violet
-  right:  { fill:'rgba(139,92,246,0.38)',  stripe:'rgba(109,40,217,0.14)',  border:'rgba(139,92,246,0.68)',  dot:'#8b5cf6', bg:'#f5f3ff', bdr:'#ddd6fe', txt:'#6d28d9', pctBg:'#ede9fe', pctTxt:'#6d28d9' },
-  // Side margins (both sides) → Blue
-  sides:  { fill:'rgba(59,130,246,0.32)',  stripe:'rgba(37,99,235,0.12)',   border:'rgba(59,130,246,0.60)',  dot:'#3b82f6', bg:'#eff6ff', bdr:'#bfdbfe', txt:'#1d4ed8', pctBg:'#dbeafe', pctTxt:'#1d4ed8' },
-  // Safe zone → Green
-  safe:   { dot:'#22c55e', bg:'#f0fdf4', bdr:'#bbf7d0', txt:'#16a34a', pctBg:'#dcfce7', pctTxt:'#15803d' },
+// ══════════════════════════════════════════════════════
+// PLATFORM SVG LOGOS (inline, no external deps)
+// ══════════════════════════════════════════════════════
+const LOGOS = {
+  instagram:`<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="ig" x1="0" y1="24" x2="24" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f09433"/><stop offset="25%" stop-color="#e6683c"/>
+      <stop offset="50%" stop-color="#dc2743"/><stop offset="75%" stop-color="#cc2366"/>
+      <stop offset="100%" stop-color="#bc1888"/>
+    </linearGradient></defs>
+    <rect width="24" height="24" rx="5.5" fill="url(#ig)"/>
+    <rect x="6" y="6" width="12" height="12" rx="3.5" fill="none" stroke="white" stroke-width="1.5"/>
+    <circle cx="12" cy="12" r="3.2" fill="none" stroke="white" stroke-width="1.5"/>
+    <circle cx="16.2" cy="7.8" r="1" fill="white"/>
+  </svg>`,
+
+  meta:`<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <rect width="24" height="24" rx="5.5" fill="#1877F2"/>
+    <path d="M13.5 20v-7h2.3l.35-2.65H13.5v-1.7c0-.77.21-1.29 1.32-1.29H16.2V5.1C15.9 5.07 14.95 5 13.84 5 11.7 5 10.25 6.3 10.25 8.7v2.65H8v2.65h2.25V20z" fill="white"/>
+  </svg>`,
+
+  tiktok:`<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <rect width="24" height="24" rx="5.5" fill="#010101"/>
+    <path d="M17 8.4a4.1 4.1 0 01-2.4-.78v5.55a3.82 3.82 0 11-3.82-3.82c.1 0 .21.01.31.02v2.12a1.74 1.74 0 101.22 1.66V4h2.07A4.07 4.07 0 0017 8.4z" fill="white"/>
+    <path d="M17 8.4a4.1 4.1 0 01-2.4-.78v5.55a3.82 3.82 0 11-3.82-3.82c.1 0 .21.01.31.02v2.12a1.74 1.74 0 101.22 1.66V4h2.07A4.07 4.07 0 0017 8.4z" fill="none" stroke="#FE2C55" stroke-width="0"/>
+    <path d="M16.6 7.95a4.1 4.1 0 002.4.45v-2a2.04 2.04 0 01-1.3-.65 4.12 4.12 0 01-1.1-2.75h-2.07v11.67a1.74 1.74 0 11-2.04-1.72V10.8a3.82 3.82 0 103.82 3.82V8.17a6.13 6.13 0 003.6 1.1V7.13a4.13 4.13 0 01-3.31-1.3V8.4z" fill="none"/>
+  </svg>`,
+
+  snapchat:`<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <rect width="24" height="24" rx="5.5" fill="#FFFC00"/>
+    <path d="M12 3.5c-2.1 0-3.8 1.7-3.8 3.8v1.4c-.4.1-.8.2-1.2.1-.1.3-.1.5 0 .7.4.1.8.1 1.2.1-.1.5-.3.9-.6 1.3-.7.5-1.4.7-1.4 1.2 0 .3.2.4.5.5.7.2 1.2.3 1.6.7.2.2.3.6.1 1.5-.1.3.1.5.4.6.4.1.8.1 1.3.1.3.6.8 1 1.9 1s1.6-.4 1.9-1c.5 0 .9 0 1.3-.1.3-.1.5-.3.4-.6-.2-.9-.1-1.3.1-1.5.4-.4.9-.5 1.6-.7.3-.1.5-.2.5-.5 0-.5-.7-.7-1.4-1.2-.3-.4-.5-.8-.6-1.3.4 0 .8 0 1.2-.1.1-.2.1-.4 0-.7-.4.1-.8 0-1.2-.1V7.3c0-2.1-1.7-3.8-3.8-3.8z" fill="#1a1a1a"/>
+  </svg>`,
+
+  youtube:`<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <rect width="24" height="24" rx="5.5" fill="#FF0000"/>
+    <path d="M19.6 8.2s-.2-1.3-.8-1.9c-.7-.8-1.5-.8-1.9-.8C14.6 5.4 12 5.4 12 5.4s-2.6 0-4.9.1c-.4 0-1.2.1-1.9.8-.6.6-.8 1.9-.8 1.9S4.2 9.7 4.2 11v1.2c0 1.4.2 2.7.2 2.7s.2 1.3.8 1.9c.7.8 1.7.7 2.1.8C8.7 17.8 12 17.8 12 17.8s2.6 0 4.9-.2c.4 0 1.2-.1 1.9-.8.6-.6.8-1.9.8-1.9s.2-1.3.2-2.7V11c0-1.4-.2-2.8-.2-2.8zM10.3 14v-4.5l5.1 2.3-5.1 2.2z" fill="white"/>
+  </svg>`,
 };
 
-// Determine which color to use for a zone
-function zoneColor(z) {
-  if (z.both) return ZONE_COLORS.sides;
-  if (z.h && z.y === 0) return ZONE_COLORS.top;
-  if (z.h && z.y > 0)  return ZONE_COLORS.bottom;
-  if (z.w && (z.x||0) > 0) return ZONE_COLORS.right;
-  return ZONE_COLORS.bottom;
-}
+// Logo HTML for tabs (small version)
+const TAB_LOGOS = {
+  'ig-stories':  `<svg class="ptab-logo" viewBox="0 0 24 24"><defs><linearGradient id="igs" x1="0" y1="24" x2="24" y2="0"><stop offset="0%" stop-color="#f09433"/><stop offset="50%" stop-color="#dc2743"/><stop offset="100%" stop-color="#bc1888"/></linearGradient></defs><rect width="24" height="24" rx="6" fill="url(#igs)"/><rect x="6" y="6" width="12" height="12" rx="3.5" fill="none" stroke="white" stroke-width="1.7"/><circle cx="12" cy="12" r="3" fill="none" stroke="white" stroke-width="1.7"/><circle cx="16.2" cy="7.8" r="1" fill="white"/></svg>`,
+  'ig-reels':    `<svg class="ptab-logo" viewBox="0 0 24 24"><defs><linearGradient id="igr" x1="0" y1="24" x2="24" y2="0"><stop offset="0%" stop-color="#f09433"/><stop offset="50%" stop-color="#dc2743"/><stop offset="100%" stop-color="#bc1888"/></linearGradient></defs><rect width="24" height="24" rx="6" fill="url(#igr)"/><rect x="6" y="6" width="12" height="12" rx="3.5" fill="none" stroke="white" stroke-width="1.7"/><circle cx="12" cy="12" r="3" fill="none" stroke="white" stroke-width="1.7"/><circle cx="16.2" cy="7.8" r="1" fill="white"/></svg>`,
+  'ig-feed-45':  `<svg class="ptab-logo" viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="#1877F2"/><path d="M13.5 20v-7h2.3l.35-2.65H13.5v-1.7c0-.77.21-1.29 1.32-1.29H16.2V5.1C15.9 5.07 14.95 5 13.84 5 11.7 5 10.25 6.3 10.25 8.7v2.65H8v2.65h2.25V20z" fill="white"/></svg>`,
+  'ig-feed-11':  `<svg class="ptab-logo" viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="#1877F2"/><path d="M13.5 20v-7h2.3l.35-2.65H13.5v-1.7c0-.77.21-1.29 1.32-1.29H16.2V5.1C15.9 5.07 14.95 5 13.84 5 11.7 5 10.25 6.3 10.25 8.7v2.65H8v2.65h2.25V20z" fill="white"/></svg>`,
+  'tiktok':      `<svg class="ptab-logo" viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="#010101"/><path d="M16 8.4a3.6 3.6 0 01-2.1-.69v4.86a3.34 3.34 0 11-3.34-3.34l.27.02v1.85a1.52 1.52 0 101.07 1.46V4h1.81A3.56 3.56 0 0016 8.4z" fill="white"/></svg>`,
+  'snapchat':    `<svg class="ptab-logo" viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="#FFFC00"/><path d="M12 4c-1.9 0-3.4 1.5-3.4 3.4v1.3c-.4.1-.7.1-1.1.1-.1.2-.1.5 0 .6.4.1.7.1 1.1.1-.1.4-.3.8-.5 1.1-.6.5-1.2.6-1.2 1.1 0 .3.2.4.4.4.6.2 1.1.3 1.4.7.2.2.3.5.1 1.3-.1.3.1.5.4.5.3.1.7.1 1.1.1.3.5.7.9 1.7.9s1.4-.4 1.7-.9c.4 0 .8 0 1.1-.1.3-.1.4-.3.4-.5-.2-.8-.1-1.1.1-1.3.3-.3.8-.5 1.4-.7.2-.1.4-.2.4-.4 0-.5-.6-.6-1.2-1.1-.2-.3-.4-.7-.5-1.1.4 0 .7 0 1.1-.1.1-.2.1-.4 0-.6-.4.1-.7.1-1.1-.1V7.4C15.4 5.5 13.9 4 12 4z" fill="#1a1a1a"/></svg>`,
+  'yt-shorts':   `<svg class="ptab-logo" viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="#FF0000"/><path d="M19.2 8s-.18-1.2-.72-1.74c-.68-.72-1.44-.72-1.79-.75C14.4 5.4 12 5.4 12 5.4s-2.4 0-4.69.11c-.35 0-1.11.03-1.79.75C5 6.8 4.8 8 4.8 8S4.6 9.38 4.6 10.77v1.26c0 1.38.2 2.77.2 2.77s.18 1.2.72 1.74c.68.72 1.57.7 1.97.77 1.43.14 6.51.18 6.51.18s2.4 0 4.69-.2c.35 0 1.11-.03 1.79-.75.54-.54.72-1.74.72-1.74s.2-1.38.2-2.77v-1.26C19.4 9.38 19.2 8 19.2 8zM10.2 13.5V9.3l4.6 2.1-4.6 2.1z" fill="white"/></svg>`,
+};
 
-// ═══════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// ZONE COLOR SYSTEM
+// ══════════════════════════════════════════════════════
+const ZC = {
+  top:    {fill:'rgba(251,146,60,0.38)',  stripe:'rgba(251,100,20,0.20)',  border:'rgba(251,146,60,0.68)',  dot:'#f97316',bg:'#fff7ed',bdr:'#fed7aa',txt:'#c2410c',pBg:'#ffedd5',pTxt:'#c2410c'},
+  bottom: {fill:'rgba(239,68,68,0.40)',   stripe:'rgba(220,38,38,0.18)',   border:'rgba(239,68,68,0.70)',   dot:'#ef4444',bg:'#fef2f2',bdr:'#fecaca',txt:'#b91c1c',pBg:'#fee2e2',pTxt:'#b91c1c'},
+  right:  {fill:'rgba(139,92,246,0.36)',  stripe:'rgba(109,40,217,0.14)',  border:'rgba(139,92,246,0.66)',  dot:'#8b5cf6',bg:'#f5f3ff',bdr:'#ddd6fe',txt:'#6d28d9',pBg:'#ede9fe',pTxt:'#6d28d9'},
+  sides:  {fill:'rgba(59,130,246,0.30)',  stripe:'rgba(37,99,235,0.12)',   border:'rgba(59,130,246,0.58)',  dot:'#3b82f6',bg:'#eff6ff',bdr:'#bfdbfe',txt:'#1d4ed8',pBg:'#dbeafe',pTxt:'#1d4ed8'},
+  safe:   {dot:'#22c55e',bg:'#f0fdf4',bdr:'#bbf7d0',txt:'#16a34a',pBg:'#dcfce7',pTxt:'#15803d'},
+};
+const zCol=z=>z.both?ZC.sides:z.iconSpots?ZC.right:z.h&&(z.y||0)===0?ZC.top:z.h&&z.y>0?ZC.bottom:ZC.right;
+
+// ══════════════════════════════════════════════════════
 // PLATFORM DATA
-// ═══════════════════════════════════════════════════════
-const PLATS = [
-  {
-    id:'ig-stories', label:'IG Stories', color:'#E1306C',
-    W:1080,H:1920,ar:9/16, res:'1080×1920px', ratio:'9:16', safeArea:'1010×1280px',
-    zones:[
-      {label:'Profile + Progress Bar', px:'268px', pct:'14%', y:0,    h:268},
-      {label:'CTA / Swipe-Up Area',    px:'672px', pct:'35%', y:1248, h:672},
-      {label:'Side Margins',           px:'65px',  pct:'6%',  x:0,    w:65, both:true},
-    ],
-    tips:[{icon:'👁',text:'Keep all content in central 1010×1280 px'},{icon:'📊',text:'Profile bar eats top 14%'},{icon:'🔗',text:'Swipe-up CTA covers bottom 35%'},{icon:'↔️',text:'6% each side = gesture zones'}],
+// ══════════════════════════════════════════════════════
+const PLATS=[
+  {id:'ig-stories',label:'IG Stories',color:'#E1306C',logoKey:'instagram',
+   W:1080,H:1920,ar:9/16,res:'1080×1920px',ratio:'9:16',safeArea:'1010×1280px',
+   zones:[
+     {label:'Profile + Progress Bar',px:'268px',pct:'14%',y:0,h:268},
+     {label:'CTA / Swipe-Up Area',px:'672px',pct:'35%',y:1248,h:672},
+     {label:'Side Margins',px:'65px',pct:'6%',x:0,w:65,both:true},
+   ],
+   tips:[{i:'👁',t:'Keep all content in central 1010×1280 px'},{i:'📊',t:'Profile + progress bar eats top 14%'},{i:'🔗',t:'Swipe-up CTA covers bottom 35%'},{i:'↔️',t:'6% each side = gesture zones'}],
   },
-  {
-    id:'ig-reels', label:'IG Reels', color:'#E1306C',
-    W:1080,H:1920,ar:9/16, res:'1080×1920px', ratio:'9:16', safeArea:'1010×1280px',
-    zones:[
-      {label:'Reels Header',        px:'268px', pct:'14%', y:0,    h:268},
-      {label:'Caption + CTA + Nav', px:'672px', pct:'35%', y:1248, h:672},
-      {label:'Side Margins',        px:'65px',  pct:'6%',  x:0,    w:65, both:true},
-      {label:'Action Icons',        px:'216px', pct:'20%', x:864,  w:216},
-    ],
-    tips:[{icon:'🎯',text:'Action icons right 20% — no logos there'},{icon:'📝',text:'Bottom 35% = caption + CTA'},{icon:'⚠️',text:'Boosting Story? Use stricter Reels zone'},{icon:'💡',text:'Safe: 1010×1280 px centered'}],
+  {id:'ig-reels',label:'IG Reels',color:'#E1306C',logoKey:'instagram',
+   W:1080,H:1920,ar:9/16,res:'1080×1920px',ratio:'9:16',safeArea:'1010×1280px',
+   zones:[
+     {label:'Reels Header',px:'268px',pct:'14%',y:0,h:268},
+     {label:'Caption + CTA + Nav',px:'672px',pct:'35%',y:1248,h:672},
+     {label:'Side Margins',px:'65px',pct:'6%',x:0,w:65,both:true},
+     {label:'Action Icons',px:'216px',pct:'20%',x:864,w:216,iconSpots:true,
+      spots:[{y:300,h:170},{y:520,h:170},{y:720,h:170},{y:920,h:170},{y:1120,h:130}]},
+   ],
+   tips:[{i:'🎯',t:'Right 20% = action icons — never put logos there'},{i:'📝',t:'Bottom 35% = caption + CTA bar'},{i:'⚠️',t:'Boosting Story as Reel? Use stricter zone'},{i:'💡',t:'Safe area: 1010×1280 px centered'}],
   },
-  {
-    id:'ig-feed-45', label:'Feed 4:5', color:'#1877F2',
-    W:1080,H:1350,ar:4/5, res:'1080×1350px', ratio:'4:5', safeArea:'1013×1135px',
-    zones:[
-      {label:'Profile Header',    px:'120px', pct:'9%',  y:0,    h:120},
-      {label:'Caption + Actions', px:'298px', pct:'22%', y:1052, h:298},
-      {label:'Side Margins',      px:'34px',  pct:'3%',  x:0,    w:34, both:true},
-    ],
-    tips:[{icon:'🖼',text:'4:5 = max feed real estate on mobile'},{icon:'📐',text:'Keep text 34px from each edge'},{icon:'💬',text:'Bottom 22% = caption + action bar'},{icon:'✅',text:'Best ratio for feed ads on Meta'}],
+  {id:'ig-feed-45',label:'Feed 4:5',color:'#1877F2',logoKey:'meta',
+   W:1080,H:1350,ar:4/5,res:'1080×1350px',ratio:'4:5',safeArea:'1013×1135px',
+   zones:[
+     {label:'Profile Header',px:'120px',pct:'9%',y:0,h:120},
+     {label:'Caption + Actions',px:'298px',pct:'22%',y:1052,h:298},
+     {label:'Side Margins',px:'34px',pct:'3%',x:0,w:34,both:true},
+   ],
+   tips:[{i:'🖼',t:'4:5 = max feed real estate on mobile'},{i:'📐',t:'Keep text 34px from each side edge'},{i:'💬',t:'Bottom 22% = caption + action bar'},{i:'✅',t:'Best ratio for Meta feed ads'}],
   },
-  {
-    id:'ig-feed-11', label:'Feed 1:1', color:'#1877F2',
-    W:1080,H:1080,ar:1, res:'1080×1080px', ratio:'1:1', safeArea:'810×810px',
-    zones:[
-      {label:'Profile Header',    px:'108px', pct:'10%',   y:0,   h:108},
-      {label:'Caption + Actions', px:'162px', pct:'15%',   y:918, h:162},
-      {label:'Side Margins',      px:'135px', pct:'12.5%', x:0,   w:135, both:true},
-    ],
-    tips:[{icon:'📦',text:'Classic Instagram square format'},{icon:'🎨',text:'Safe zone: 810×810 px center'},{icon:'⚡',text:'Works for feed + carousel ads'},{icon:'📱',text:'Full-width on all mobile screens'}],
+  {id:'ig-feed-11',label:'Feed 1:1',color:'#1877F2',logoKey:'meta',
+   W:1080,H:1080,ar:1,res:'1080×1080px',ratio:'1:1',safeArea:'810×810px',
+   zones:[
+     {label:'Profile Header',px:'108px',pct:'10%',y:0,h:108},
+     {label:'Caption + Actions',px:'162px',pct:'15%',y:918,h:162},
+     {label:'Side Margins',px:'135px',pct:'12.5%',x:0,w:135,both:true},
+   ],
+   tips:[{i:'📦',t:'Classic Instagram square format'},{i:'🎨',t:'Safe zone: 810×810 px center'},{i:'⚡',t:'Works for feed + carousel ads'},{i:'📱',t:'Full-width on all mobile screens'}],
   },
-  {
-    id:'tiktok', label:'TikTok', color:'#FE2C55',
-    W:1080,H:1920,ar:9/16, res:'1080×1920px', ratio:'9:16', safeArea:'852×1266px',
-    zones:[
-      {label:'Navigation Tabs',     px:'270px', pct:'14%', y:0,    h:270},
-      {label:'Caption + CTA + Nav', px:'384px', pct:'20%', y:1536, h:384},
-      {label:'Action Icons',        px:'228px', pct:'21%', x:852,  w:228},
-    ],
-    tips:[{icon:'🚫',text:'Right 21% = icons always — no brand here'},{icon:'📝',text:'Bottom 20% always unsafe'},{icon:'🎵',text:'Music disc sits bottom-right'},{icon:'🎯',text:'Keep visuals left-center'}],
+  {id:'tiktok',label:'TikTok',color:'#010101',logoKey:'tiktok',
+   W:1080,H:1920,ar:9/16,res:'1080×1920px',ratio:'9:16',safeArea:'852×1266px',
+   zones:[
+     {label:'Navigation Tabs',px:'270px',pct:'14%',y:0,h:270},
+     {label:'Caption + CTA + Nav',px:'384px',pct:'20%',y:1536,h:384},
+     {label:'Action Icons',px:'228px',pct:'21%',x:852,w:228,iconSpots:true,
+      spots:[{y:250,h:180},{y:490,h:180},{y:690,h:180},{y:890,h:180},{y:1090,h:160}]},
+   ],
+   tips:[{i:'🚫',t:'Right 21% = icons always — no brand here'},{i:'📝',t:'Bottom 20% always unsafe'},{i:'🎵',t:'Music disc sits bottom-right'},{i:'🎯',t:'Keep visuals left-center'}],
   },
-  {
-    id:'snapchat', label:'Snapchat', color:'#FFFC00',
-    W:1080,H:1920,ar:9/16, res:'1080×1920px', ratio:'9:16', safeArea:'1080×1382px',
-    zones:[
-      {label:'Brand Header', px:'250px', pct:'13%', y:0,    h:250},
-      {label:'Swipe Up CTA', px:'288px', pct:'15%', y:1632, h:288},
-    ],
-    tips:[{icon:'👁',text:'Header: brand name + "Ad · 0:05"'},{icon:'⬆️',text:'Swipe-up CTA: bottom 15%'},{icon:'⏱',text:'Avg view 2–3s — hook in safe zone'},{icon:'🟡',text:'Yellow CTA always at bottom'}],
+  {id:'snapchat',label:'Snapchat',color:'#FFFC00',logoKey:'snapchat',
+   W:1080,H:1920,ar:9/16,res:'1080×1920px',ratio:'9:16',safeArea:'1080×1382px',
+   zones:[
+     {label:'Brand Header',px:'250px',pct:'13%',y:0,h:250},
+     {label:'Swipe Up CTA',px:'288px',pct:'15%',y:1632,h:288},
+   ],
+   tips:[{i:'👁',t:'Header: brand name + "Ad · 0:05"'},{i:'⬆️',t:'Swipe-up CTA covers bottom 15%'},{i:'⏱',t:'Avg view 2–3s — hook must be visible'},{i:'🟡',t:'Yellow CTA button always at bottom'}],
   },
-  {
-    id:'yt-shorts', label:'YT Shorts', color:'#FF0000',
-    W:1080,H:1920,ar:9/16, res:'1080×1920px', ratio:'9:16', safeArea:'882×1282px',
-    zones:[
-      {label:'Shorts Header',         px:'216px', pct:'11%', y:0,    h:216},
-      {label:'Channel + Title + Nav', px:'422px', pct:'22%', y:1498, h:422},
-      {label:'Action Icons',          px:'198px', pct:'18%', x:882,  w:198},
-    ],
-    tips:[{icon:'🚫',text:'Right 18% = Like/Dislike/Comment/Share'},{icon:'📺',text:'"Shorts" logo always top center'},{icon:'👤',text:'Channel + Subscribe: bottom 22%'},{icon:'🛒',text:'Shopping shelf can appear here'}],
+  {id:'yt-shorts',label:'YT Shorts',color:'#FF0000',logoKey:'youtube',
+   W:1080,H:1920,ar:9/16,res:'1080×1920px',ratio:'9:16',safeArea:'882×1282px',
+   zones:[
+     {label:'Shorts Header',px:'216px',pct:'11%',y:0,h:216},
+     {label:'Channel + Title + Nav',px:'422px',pct:'22%',y:1498,h:422},
+     {label:'Action Icons',px:'198px',pct:'18%',x:882,w:198,iconSpots:true,
+      spots:[{y:260,h:170},{y:460,h:170},{y:660,h:170},{y:860,h:170},{y:1060,h:160}]},
+   ],
+   tips:[{i:'🚫',t:'Right 18% = Like/Dislike/Comment/Share'},{i:'📺',t:'"Shorts" logo always top center'},{i:'👤',t:'Channel + Subscribe: bottom 22%'},{i:'🛒',t:'Shopping shelf can appear here'}],
   },
 ];
 
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // STATE
-// ═══════════════════════════════════════════════════
-let pid='ig-stories', DW=0, DH=0;
-let mediaEl=null, isVid=false, murl=null, raf=null, showZ=true;
+// ══════════════════════════════════════════════════════
+let pid='ig-stories',DW=0,DH=0;
+let mediaEl=null,isVid=false,murl=null,raf=null,showZ=true;
 const plat=()=>PLATS.find(p=>p.id===pid);
-const isMobile=()=>window.innerWidth<=600;
+const isMob=()=>window.innerWidth<=600;
 
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // SIZING
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 function calcSize(){
   const stage=document.getElementById('stage');
-  const pl=plat(); const mob=isMobile(); const tabW=window.innerWidth;
+  const pl=plat();const W=window.innerWidth;
   let avW,avH;
-  if(mob){avW=Math.min(stage.clientWidth-20,300);avH=Math.min(stage.clientHeight-80,520);}
-  else if(tabW<=900){avW=Math.min(stage.clientWidth-185,280);avH=Math.min(stage.clientHeight-30,560);}
-  else{avW=Math.min(stage.clientWidth-215,300);avH=Math.min(stage.clientHeight-30,620);}
+  if(W<=600){avW=Math.min(stage.clientWidth-20,300);avH=Math.min(stage.clientHeight-80,520);}
+  else if(W<=900){avW=Math.min(stage.clientWidth-190,280);avH=Math.min(stage.clientHeight-30,560);}
+  else{avW=Math.min(stage.clientWidth-220,300);avH=Math.min(stage.clientHeight-30,630);}
   if(avW/avH>pl.ar){DH=Math.max(avH,100);DW=Math.floor(DH*pl.ar);}
   else{DW=Math.max(avW,80);DH=Math.floor(DW/pl.ar);}
 }
 function applySize(){
   calcSize();
   const card=document.getElementById('ccard');
-  card.style.width=DW+'px'; card.style.height=DH+'px';
+  card.style.width=DW+'px';card.style.height=DH+'px';
   const mc=document.getElementById('l-media');
-  mc.width=DW; mc.height=DH;
-  mc.style.cssText=`display:block;width:${DW}px;height:${DH}px;`;
+  mc.width=DW;mc.height=DH;mc.style.cssText=`display:block;width:${DW}px;height:${DH}px;`;
   const zs=document.getElementById('l-zones');
-  zs.setAttribute('width',DW); zs.setAttribute('height',DH);
+  zs.setAttribute('width',DW);zs.setAttribute('height',DH);
   zs.setAttribute('viewBox',`0 0 ${DW} ${DH}`);
   zs.style.cssText=`position:absolute;inset:0;width:${DW}px;height:${DH}px;pointer-events:none;`;
 }
 
-// ═══════════════════════════════════════════════════
-// PLATFORM TABS
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// PLATFORM TABS — with logos
+// ══════════════════════════════════════════════════════
 function buildTabs(){
-  const wrap=document.getElementById('ptabs'); wrap.innerHTML='';
+  const wrap=document.getElementById('ptabs');wrap.innerHTML='';
   PLATS.forEach(p=>{
-    const b=document.createElement('button'); b.className='ptab'+(p.id===pid?' on':'');
-    b.textContent=p.label;
-    if(p.id===pid) b.style.cssText=`border-color:${p.color}55;background:${p.color}0e;color:${p.color};border-radius:20px;border-width:1.5px;font-weight:700;`;
+    const b=document.createElement('button');
+    b.className='ptab'+(p.id===pid?' on':'');
+    b.innerHTML=`${TAB_LOGOS[p.id]||''}<span>${p.label}</span>`;
+    if(p.id===pid){
+      b.style.cssText=`border-color:${p.color==='#010101'?'#333':p.color}55;background:${p.color==='#010101'?'#f9fafb':p.color+'0e'};color:${p.color==='#010101'?'#111':p.color};font-weight:700;`;
+    }
     b.onclick=()=>{pid=p.id;buildTabs();rebuild();};
     wrap.appendChild(b);
   });
 }
 
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // TOGGLE
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 function toggleZones(){
   showZ=!showZ;
-  document.getElementById('btn-z').classList.toggle('on',showZ);
-  renderZones(); renderLabels();
+  const btn=document.getElementById('btn-z');
+  btn.classList.toggle('on',showZ);
+  renderZones();renderLabels();
 }
 
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // FILE HANDLING
-// ═══════════════════════════════════════════════════
-// Drag & drop on the dz div
+// ══════════════════════════════════════════════════════
 const dzEl=document.getElementById('dz');
-dzEl.addEventListener('dragover',e=>{e.preventDefault();dzEl.style.background='#1c1930';});
-dzEl.addEventListener('dragleave',()=>{dzEl.style.background='#18181c';});
+dzEl.addEventListener('dragover',e=>{e.preventDefault();dzEl.style.background='#1c1830';});
+dzEl.addEventListener('dragleave',()=>{dzEl.style.background='#111';});
 dzEl.addEventListener('drop',e=>{
-  e.preventDefault(); dzEl.style.background='#18181c';
-  if(e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+  e.preventDefault();dzEl.style.background='#111';
+  if(e.dataTransfer.files[0])handleFile(e.dataTransfer.files[0]);
 });
 
 function handleFile(file){
-  if(!file) return;
-  if(murl) URL.revokeObjectURL(murl);
-  if(raf) cancelAnimationFrame(raf);
-  murl=URL.createObjectURL(file); isVid=file.type.startsWith('video/');
+  if(!file)return;
+  if(murl)URL.revokeObjectURL(murl);if(raf)cancelAnimationFrame(raf);raf=null;
+  murl=URL.createObjectURL(file);isVid=file.type.startsWith('video/');
   dzEl.style.display='none';
   document.getElementById('btn-new').style.display='flex';
   if(isVid){
     const v=document.createElement('video');
     v.src=murl;v.muted=true;v.loop=true;v.playsInline=true;v.autoplay=true;
     v.onloadeddata=()=>{mediaEl=v;v.play();renderAll();};
-  } else {
+  }else{
     const img=new Image();
     img.onload=()=>{mediaEl=img;renderAll();};
     img.src=murl;
   }
 }
 function resetFile(){
-  if(raf) cancelAnimationFrame(raf); raf=null;
-  if(mediaEl&&isVid) mediaEl.pause();
-  if(murl) URL.revokeObjectURL(murl);
+  if(raf)cancelAnimationFrame(raf);raf=null;
+  if(mediaEl&&isVid)mediaEl.pause();
+  if(murl)URL.revokeObjectURL(murl);
   mediaEl=null;murl=null;isVid=false;
   dzEl.style.display='flex';
   document.getElementById('btn-new').style.display='none';
@@ -438,200 +556,200 @@ function drawMedia(){
   if(mediaEl){try{ctx.drawImage(mediaEl,0,0,DW,DH);}catch(e){}}
 }
 
-// ═══════════════════════════════════════════════════
-// SAFE ZONE SVG — each zone gets its own color
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// SVG ZONES
+// ══════════════════════════════════════════════════════
 function se(tag,a={}){
   const e=document.createElementNS('http://www.w3.org/2000/svg',tag);
-  Object.entries(a).forEach(([k,v])=>e.setAttribute(k,v)); return e;
+  Object.entries(a).forEach(([k,v])=>e.setAttribute(k,v));return e;
 }
-
-function drawZoneRect(svg,x,y,w,h,col,patId){
-  svg.appendChild(se('rect',{x,y,width:w,height:h,fill:col.fill}));
-  svg.appendChild(se('rect',{x,y,width:w,height:h,fill:`url(#${patId})`}));
-  svg.appendChild(se('rect',{x,y,width:w,height:h,fill:'none',stroke:col.border,'stroke-width':'1.5'}));
+function drawRect(svg,x,y,w,h,col,pid2,rx=0){
+  if(rx){
+    svg.appendChild(se('rect',{x,y,width:w,height:h,rx,ry:rx,fill:col.fill}));
+    svg.appendChild(se('rect',{x,y,width:w,height:h,rx,ry:rx,fill:`url(#${pid2})`}));
+    svg.appendChild(se('rect',{x,y,width:w,height:h,rx,ry:rx,fill:'none',stroke:col.border,'stroke-width':'1.5'}));
+  }else{
+    svg.appendChild(se('rect',{x,y,width:w,height:h,fill:col.fill}));
+    svg.appendChild(se('rect',{x,y,width:w,height:h,fill:`url(#${pid2})`}));
+    svg.appendChild(se('rect',{x,y,width:w,height:h,fill:'none',stroke:col.border,'stroke-width':'1.5'}));
+  }
 }
 
 function renderZones(){
-  const svg=document.getElementById('l-zones'); svg.innerHTML='';
-  if(!showZ||!mediaEl) return;
-  const pl=plat(); const scX=DW/pl.W, scY=DH/pl.H;
+  const svg=document.getElementById('l-zones');svg.innerHTML='';
+  if(!showZ||!mediaEl)return;
+  const pl=plat();const scX=DW/pl.W,scY=DH/pl.H;
 
-  // Create one stripe pattern per color
-  const defs=se('defs'); svg.appendChild(defs);
-  const colorKeys=['top','bottom','right','sides'];
-  colorKeys.forEach(key=>{
-    const c=ZONE_COLORS[key];
-    const pat=se('pattern',{id:'pat-'+key,patternUnits:'userSpaceOnUse',width:'12',height:'12',patternTransform:'rotate(45)'});
-    const ln=se('line',{x1:'0',y1:'0',x2:'0',y2:'12',stroke:c.stripe.replace('0.16','0.22'),'stroke-width':'7'});
-    pat.appendChild(ln); defs.appendChild(pat);
+  const defs=se('defs');svg.appendChild(defs);
+  ['top','bottom','right','sides'].forEach(k=>{
+    const c=ZC[k];
+    const pat=se('pattern',{id:'p-'+k,patternUnits:'userSpaceOnUse',width:'12',height:'12',patternTransform:'rotate(45)'});
+    const ln=se('line',{x1:'0',y1:'0',x2:'0',y2:'12',stroke:c.stripe,'stroke-width':'7'});
+    pat.appendChild(ln);defs.appendChild(pat);
   });
 
   let sTop=0,sBot=0,sLeft=0,sRight=0;
 
   pl.zones.forEach(z=>{
-    const col=zoneColor(z);
-    const patKey=z.both?'sides':z.h&&z.y===0?'top':z.h&&z.y>0?'bottom':'right';
+    const col=zCol(z);
+    const pk=z.both?'sides':z.iconSpots?'right':z.h&&(z.y||0)===0?'top':'bottom';
+
     if(z.both){
       const lw=z.w*scX;
-      drawZoneRect(svg,0,0,lw,DH,col,'pat-'+patKey);
-      drawZoneRect(svg,DW-lw,0,lw,DH,col,'pat-'+patKey);
-      sLeft=Math.max(sLeft,lw); sRight=sLeft;
-    } else {
-      const x=(z.x||0)*scX, y=(z.y||0)*scY;
-      const w=z.w?z.w*scX:DW, h=z.h?z.h*scY:DH;
-      drawZoneRect(svg,x,y,w,h,col,'pat-'+patKey);
-      if(!z.x&&z.y===0&&z.h) sTop=Math.max(sTop,h);
-      if(!z.x&&z.y>0&&z.h)   sBot=Math.max(sBot,DH-y);
-      if(!z.y&&z.x>0&&z.w)   sRight=Math.max(sRight,DW-x);
+      drawRect(svg,0,0,lw,DH,col,'p-'+pk);
+      drawRect(svg,DW-lw,0,lw,DH,col,'p-'+pk);
+      sLeft=Math.max(sLeft,lw);sRight=sLeft;
+
+    }else if(z.iconSpots&&z.spots){
+      const zx=(z.x||0)*scX,zw=z.w*scX;
+      // Faint column boundary
+      svg.appendChild(se('rect',{x:zx,y:0,width:zw,height:DH,
+        fill:'rgba(139,92,246,0.04)',stroke:'rgba(139,92,246,0.22)','stroke-width':'1','stroke-dasharray':'5 4'}));
+      // Individual icon spots
+      const rx=Math.round(zw*0.22);
+      z.spots.forEach(sp=>{
+        const sy=sp.y*scY,sh=sp.h*scY;
+        drawRect(svg,zx+zw*0.06,sy,zw*0.88,sh,col,'p-right',rx);
+      });
+      sRight=Math.max(sRight,DW-zx);
+
+    }else{
+      const x=(z.x||0)*scX,y=(z.y||0)*scY;
+      const w=z.w?z.w*scX:DW,h=z.h?z.h*scY:DH;
+      drawRect(svg,x,y,w,h,col,'p-'+pk);
+      if(!z.x&&(z.y||0)===0&&z.h) sTop=Math.max(sTop,h);
+      if(!z.x&&z.y>0&&z.h)        sBot=Math.max(sBot,DH-y);
+      if(!z.y&&z.x>0&&z.w)        sRight=Math.max(sRight,DW-x);
     }
   });
 
-  // Safe zone dashed border — green
+  // Safe zone green dashed border
   svg.appendChild(se('rect',{
     x:sLeft+1,y:sTop+1,width:DW-sLeft-sRight-2,height:DH-sTop-sBot-2,
-    fill:'rgba(34,197,94,0.04)',
-    stroke:'rgba(34,197,94,0.75)',
+    fill:'rgba(34,197,94,0.03)',stroke:'rgba(34,197,94,0.72)',
     'stroke-width':'1.8','stroke-dasharray':'9 5'
   }));
 }
 
-// ═══════════════════════════════════════════════════
-// ZONE LABELS — colored to match their zone
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// ZONE LABELS
+// ══════════════════════════════════════════════════════
 function renderLabels(){
-  const panel=document.getElementById('labels-panel'); panel.innerHTML='';
-  if(!mediaEl) return;
+  const panel=document.getElementById('labels-panel');panel.innerHTML='';
+  if(!mediaEl)return;
   const pl=plat();
+  const toShow=[...pl.zones.filter(z=>!z.both)];
+  const sideZ=pl.zones.find(z=>z.both);
+  if(sideZ)toShow.push(sideZ);
 
-  pl.zones.forEach(z=>{
-    if(z.both) return; // don't duplicate side margins in labels
-    const col=zoneColor(z);
-    const lbl=document.createElement('div');
-    lbl.className='zlbl';
-    lbl.style.borderColor=col.bdr;
-    lbl.style.background=col.bg;
+  toShow.forEach(z=>{
+    const col=zCol(z);
+    const lbl=document.createElement('div');lbl.className='zlbl';
+    lbl.style.borderColor=col.bdr;lbl.style.background=col.bg;
     lbl.innerHTML=`
       <span class="zdot" style="background:${col.dot};"></span>
       <span class="zlbl-name" style="color:${col.txt};">${z.label}</span>
-      <span class="zpct" style="background:${col.pctBg};color:${col.pctTxt};">${z.pct}</span>`;
+      <span class="zpct" style="background:${col.pBg};color:${col.pTxt};">${z.pct}</span>`;
     panel.appendChild(lbl);
   });
 
-  // Show side margins if present
-  const sideZ=pl.zones.find(z=>z.both);
-  if(sideZ){
-    const col=ZONE_COLORS.sides;
-    const lbl=document.createElement('div');
-    lbl.className='zlbl';
-    lbl.style.borderColor=col.bdr;
-    lbl.style.background=col.bg;
-    lbl.innerHTML=`
-      <span class="zdot" style="background:${col.dot};"></span>
-      <span class="zlbl-name" style="color:${col.txt};">${sideZ.label}</span>
-      <span class="zpct" style="background:${col.pctBg};color:${col.pctTxt};">${sideZ.pct}</span>`;
-    panel.appendChild(lbl);
-  }
-
-  // Safe zone label
-  const col=ZONE_COLORS.safe;
-  const safe=document.createElement('div');
-  safe.className='zlbl';
-  safe.style.borderColor=col.bdr;
-  safe.style.background=col.bg;
+  // Safe zone
+  const sc=ZC.safe;
+  const safe=document.createElement('div');safe.className='zlbl';
+  safe.style.borderColor=sc.bdr;safe.style.background=sc.bg;
   safe.innerHTML=`
-    <span class="zdot" style="background:${col.dot};"></span>
-    <span class="zlbl-name" style="font-weight:600;color:${col.txt};">Safe Zone</span>
-    <span class="zpct" style="background:${col.pctBg};color:${col.pctTxt};font-family:'Courier New',monospace;">${pl.safeArea}</span>`;
+    <span class="zdot" style="background:${sc.dot};"></span>
+    <span class="zlbl-name" style="font-weight:600;color:${sc.txt};">Safe Zone</span>
+    <span class="zpct" style="background:${sc.pBg};color:${sc.pTxt};font-family:'Courier New',monospace;font-size:9.5px;">${pl.safeArea}</span>`;
   panel.appendChild(safe);
 }
 
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // INFO PANEL
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 function renderInfoPanel(){
   const pl=plat();
-  const container=document.getElementById('info-inner'); container.innerHTML='';
+  const container=document.getElementById('info-inner');container.innerHTML='';
 
-  // Spec card
-  const spec=document.createElement('div'); spec.className='spec-card';
+  // Spec card with platform logo
+  const spec=document.createElement('div');spec.className='spec-card';
+  const logoColor=pl.color==='#010101'?'#111':pl.color;
+  const logoBg=pl.color==='#FFFC00'?'#FFFC00':pl.color==='#010101'?'#111':pl.color;
   spec.innerHTML=`
-    <div class="spec-plat">
-      <span class="spec-dot" style="background:${pl.color};"></span>
-      <span class="spec-name">${pl.label}</span>
+    <div class="spec-header">
+      <div class="spec-logo" style="background:${logoBg};">${LOGOS[pl.logoKey]||''}</div>
+      <div>
+        <div class="spec-name">${pl.label}</div>
+      </div>
     </div>
     <table class="spec-table">
       <tr><td>Resolution</td><td>${pl.res}</td></tr>
-      <tr><td>Ratio</td><td>${pl.ratio}</td></tr>
+      <tr><td>Aspect Ratio</td><td>${pl.ratio}</td></tr>
       <tr><td>Safe Area</td><td style="color:#16a34a;">${pl.safeArea}</td></tr>
-      <tr><td>Unsafe Zones</td><td>${pl.zones.length}</td></tr>
+      <tr><td>Zones</td><td>${pl.zones.length} unsafe</td></tr>
     </table>`;
   container.appendChild(spec);
 
   // Zone breakdown
-  const zb=document.createElement('div'); zb.className='zone-breakdown';
-  let sTop=0,sBot=0,sLeft=0,sRight=0;
+  const zb=document.createElement('div');zb.className='zone-breakdown';
+  let sT=0,sB=0,sL=0,sR=0;
   pl.zones.forEach(z=>{
-    if(!z.x&&z.y===0&&z.h) sTop=Math.max(sTop,z.h);
-    if(!z.x&&z.y>0&&z.h)   sBot=Math.max(sBot,pl.H-z.y);
-    if(!z.y&&z.x>0&&z.w)   sRight=Math.max(sRight,pl.W-z.x);
-    if(z.both&&z.w){sLeft=z.w;sRight=Math.max(sRight,z.w);}
+    if(!z.x&&(z.y||0)===0&&z.h) sT=Math.max(sT,z.h);
+    if(!z.x&&z.y>0&&z.h)        sB=Math.max(sB,pl.H-z.y);
+    if(!z.y&&z.x>0&&z.w)        sR=Math.max(sR,pl.W-z.x);
+    if(z.both&&z.w){sL=z.w;sR=Math.max(sR,z.w);}
   });
-  const safePct=Math.round((pl.W-sLeft-sRight)*(pl.H-sTop-sBot)/(pl.W*pl.H)*100);
-  zb.innerHTML=`<div class="zb-title">Zone Breakdown</div><div class="zb-rows" id="zbr"></div>`;
+  const safePct=Math.round((pl.W-sL-sR)*(pl.H-sT-sB)/(pl.W*pl.H)*100);
+
+  zb.innerHTML=`<div class="panel-title">Zone Breakdown</div><div class="zb-rows" id="zbr"></div>`;
   container.appendChild(zb);
   const zbr=zb.querySelector('#zbr');
 
   pl.zones.forEach(z=>{
-    const col=zoneColor(z);
-    const row=document.createElement('div'); row.className='zb-row';
-    row.style.background=col.bg; row.style.borderColor=col.bdr;
-    const area=z.both?`${z.px} each side`:z.px;
+    const col=zCol(z);
+    const row=document.createElement('div');row.className='zb-row';
+    row.style.background=col.bg;row.style.borderColor=col.bdr;
     row.innerHTML=`
       <span class="zb-rdot" style="background:${col.dot};"></span>
       <span class="zb-label" style="color:${col.txt};">${z.label}</span>
-      <span class="zb-px">${area}</span>
-      <span class="zb-pct" style="background:${col.pctBg};color:${col.pctTxt};">${z.pct}</span>`;
+      <span class="zb-px">${z.both?z.px+' each side':z.px}</span>
+      <span class="zb-pct" style="background:${col.pBg};color:${col.pTxt};">${z.pct}</span>`;
     zbr.appendChild(row);
   });
 
-  const safeCol=ZONE_COLORS.safe;
-  const safeRow=document.createElement('div'); safeRow.className='zb-row';
-  safeRow.style.background=safeCol.bg; safeRow.style.borderColor=safeCol.bdr;
-  safeRow.innerHTML=`
-    <span class="zb-rdot" style="background:${safeCol.dot};"></span>
-    <span class="zb-label" style="font-weight:600;color:${safeCol.txt};">Safe Zone</span>
-    <span class="zb-px" style="color:${safeCol.txt};">${pl.safeArea}</span>
-    <span class="zb-pct" style="background:${safeCol.pctBg};color:${safeCol.pctTxt};">${safePct}%</span>`;
-  zbr.appendChild(safeRow);
+  const sc=ZC.safe;
+  const sr=document.createElement('div');sr.className='zb-row';
+  sr.style.background=sc.bg;sr.style.borderColor=sc.bdr;
+  sr.innerHTML=`
+    <span class="zb-rdot" style="background:${sc.dot};"></span>
+    <span class="zb-label" style="font-weight:600;color:${sc.txt};">Safe Zone</span>
+    <span class="zb-px" style="color:${sc.txt};">${pl.safeArea}</span>
+    <span class="zb-pct" style="background:${sc.pBg};color:${sc.pTxt};">${safePct}%</span>`;
+  zbr.appendChild(sr);
 
   // Tips
-  const tips=document.createElement('div'); tips.className='tips-col';
-  const mob=isMobile();
-  tips.innerHTML=`<div class="tips-title">💡 Design Tips</div>
-    <div class="${mob?'tips-grid':''}">
-      ${pl.tips.map(t=>`<div class="tip-item"><span class="tip-icon">${t.icon}</span><span>${t.text}</span></div>`).join('')}
+  const tips=document.createElement('div');tips.className='tips-col';
+  tips.innerHTML=`<div class="panel-title">💡 Design Tips</div>
+    <div class="${isMob()?'tips-grid':''}">
+      ${pl.tips.map(t=>`<div class="tip-item"><span class="tip-icon">${t.i}</span><span>${t.t}</span></div>`).join('')}
     </div>`;
   container.appendChild(tips);
 }
 
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // RENDER + REBUILD
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 function renderAll(){
-  if(!isVid) drawMedia();
-  if(isVid&&mediaEl&&!raf){
-    const loop=()=>{drawMedia();raf=requestAnimationFrame(loop);};
-    raf=requestAnimationFrame(loop);
-  }
-  renderZones(); renderLabels(); renderInfoPanel();
+  if(!isVid)drawMedia();
+  if(isVid&&mediaEl&&!raf){const lp=()=>{drawMedia();raf=requestAnimationFrame(lp);};raf=requestAnimationFrame(lp);}
+  renderZones();renderLabels();renderInfoPanel();
 }
-function rebuild(){ applySize(); renderAll(); }
+function rebuild(){applySize();renderAll();}
 
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // INIT
-// ═══════════════════════════════════════════════════
-buildTabs(); renderInfoPanel();
+// ══════════════════════════════════════════════════════
+buildTabs();renderInfoPanel();
 window.addEventListener('resize',()=>setTimeout(rebuild,50));
 setTimeout(rebuild,60);
 </script>
