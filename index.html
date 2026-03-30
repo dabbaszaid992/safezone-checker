@@ -9,130 +9,102 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;font-family:'Inter',system-ui,sans-serif;background:#ECEEF2;-webkit-font-smoothing:antialiased;}
 body{display:flex;flex-direction:column;overflow:hidden;}
-button,label{font-family:inherit;cursor:pointer;}
+button{font-family:inherit;cursor:pointer;}
 input[type=file]{display:none;}
 ::-webkit-scrollbar{width:3px;height:3px;}
 ::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px;}
 
-/* ══════════════════════════════════════
-   TOP BAR
-══════════════════════════════════════ */
-#bar{
-  background:#fff;border-bottom:1px solid #e0e2e8;
-  flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,.06);
-}
-
-/* Row 1: logo + upload */
-.bar-row1{
-  height:52px;display:flex;align-items:center;
-  padding:0 14px;gap:10px;
-}
+/* ── TOP BAR ── */
+#bar{background:#fff;border-bottom:1px solid #e0e2e8;flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.bar-row1{height:52px;display:flex;align-items:center;padding:0 14px;gap:10px;}
 .logo{display:flex;align-items:center;gap:8px;flex:1;}
-.logo-mark{width:30px;height:30px;border-radius:8px;
-  background:linear-gradient(135deg,#5865f2,#9333ea);
+.logo-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#5865f2,#9333ea);
   display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
 .logo-name{font-size:14px;font-weight:700;letter-spacing:-.02em;color:#111;}
-.logo-tag{font-size:10px;color:#888;font-weight:400;}
+.logo-tag{font-size:10px;color:#999;font-weight:400;}
 .bar-actions{display:flex;gap:8px;align-items:center;flex-shrink:0;}
+
 .tbtn{display:flex;align-items:center;gap:5px;padding:7px 12px;
   border-radius:8px;border:1.5px solid #e0e2e8;background:#fff;
   font-size:12px;font-weight:500;color:#666;cursor:pointer;white-space:nowrap;transition:all .12s;}
-.tbtn.on{border-color:#ef444450;background:#ef44440a;color:#ef4444;font-weight:600;}
+.tbtn.on{border-color:#5865f250;background:#5865f20a;color:#5865f2;font-weight:600;}
+
 .newbtn{display:flex;align-items:center;gap:5px;padding:7px 11px;
   border-radius:8px;border:1.5px solid #e0e2e8;background:#fff;
   font-size:12px;font-weight:500;color:#555;cursor:pointer;white-space:nowrap;}
-.upbtn{display:flex;align-items:center;gap:6px;padding:8px 16px;
-  border-radius:8px;background:#111;color:#fff;font-size:12px;
-  font-weight:600;border:none;cursor:pointer;white-space:nowrap;}
 
-/* Row 2: platform scrollable tabs */
-.bar-row2{
-  display:flex;gap:6px;padding:0 14px 10px;
-  overflow-x:auto;-webkit-overflow-scrolling:touch;
+/* Upload button — acts as a label wrapping hidden input */
+#upload-label{
+  display:flex;align-items:center;gap:6px;padding:8px 16px;
+  border-radius:8px;background:#111;color:#fff;font-size:12px;
+  font-weight:600;border:none;cursor:pointer;white-space:nowrap;
+  user-select:none;-webkit-user-select:none;
 }
+#upload-label:active{background:#333;}
+#upload-label input{display:none;}
+
+/* Platform tabs */
+.bar-row2{display:flex;gap:6px;padding:0 14px 10px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
 .bar-row2::-webkit-scrollbar{display:none;}
-.ptab{
-  padding:6px 13px;border-radius:20px;border:1.5px solid #e0e2e8;
+.ptab{padding:6px 13px;border-radius:20px;border:1.5px solid #e0e2e8;
   background:#fff;font-size:12px;font-weight:500;color:#555;
-  cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .12s;
-}
+  cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .12s;}
 .ptab.on{font-weight:700;}
 
-/* ══════════════════════════════════════
-   MAIN BODY
-══════════════════════════════════════ */
+/* ── BODY ── */
 #body{flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0;}
 
-/* ══════════════════════════════════════
-   STAGE
-══════════════════════════════════════ */
-#stage{
-  flex:1;display:flex;align-items:center;justify-content:center;
-  overflow:hidden;position:relative;min-height:0;padding:12px;
-}
-
-/* On mobile: stack canvas + labels vertically */
-#stage-inner{
-  display:flex;align-items:flex-start;justify-content:center;
-  gap:12px;width:100%;height:100%;
-}
+/* ── STAGE ── */
+#stage{flex:1;display:flex;align-items:center;justify-content:center;
+  overflow:hidden;position:relative;min-height:0;padding:12px;}
+#stage-inner{display:flex;align-items:center;justify-content:center;gap:14px;width:100%;height:100%;}
 
 /* Canvas card */
-#ccard{
-  position:relative;flex-shrink:0;border-radius:10px;
-  overflow:hidden;line-height:0;
-  box-shadow:0 16px 40px rgba(0,0,0,.20),0 4px 12px rgba(0,0,0,.10);
-}
+#ccard{position:relative;flex-shrink:0;border-radius:10px;overflow:hidden;line-height:0;
+  box-shadow:0 16px 40px rgba(0,0,0,.22),0 4px 12px rgba(0,0,0,.12);}
 #l-media{display:block;}
 #l-zones{position:absolute;inset:0;pointer-events:none;}
 
-/* Drop zone */
+/* ── UPLOAD STATE — fixed tap ── */
 #dz{
-  position:absolute;inset:0;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:12px;
-  background:#18181c;cursor:pointer;transition:background .16s;
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;background:#18181c;border-radius:inherit;
+  /* pointer-events handled by the label inside, not the div itself */
 }
-#dz.drag{background:#1c1930;}
-#dz input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;}
-.dz-ring{width:52px;height:52px;border-radius:14px;
-  background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);
-  display:flex;align-items:center;justify-content:center;}
-.dz-t{font-size:13px;font-weight:600;color:#fff;text-align:center;padding:0 16px;}
-.dz-s{font-size:11px;color:rgba(255,255,255,.3);text-align:center;padding:0 16px;}
+#dz-label{
+  /* This label covers the entire dropzone and handles the tap */
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;cursor:pointer;z-index:2;
+}
+#dz-label input{display:none;}
+.dz-ring{
+  width:56px;height:56px;border-radius:16px;
+  background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.14);
+  display:flex;align-items:center;justify-content:center;pointer-events:none;
+}
+.dz-t{font-size:14px;font-weight:600;color:#fff;text-align:center;pointer-events:none;}
+.dz-s{font-size:11.5px;color:rgba(255,255,255,.32);text-align:center;pointer-events:none;}
+.dz-badge{font-size:10.5px;color:rgba(255,255,255,.22);text-align:center;pointer-events:none;}
 
-/* ── Labels panel (right on desktop, below on mobile) */
-#labels-panel{
-  display:flex;flex-direction:column;gap:6px;
-  flex-shrink:0;
-}
+/* ── ZONE LABELS panel ── */
+#labels-panel{display:flex;flex-direction:column;gap:7px;flex-shrink:0;}
 .zlbl{
-  display:flex;align-items:center;gap:7px;
-  padding:5px 10px 5px 8px;
-  background:rgba(255,255,255,.97);border:1px solid #dde0e8;
-  border-radius:7px;font-size:11.5px;font-weight:500;color:#333;
+  display:flex;align-items:center;gap:7px;padding:6px 11px 6px 9px;
+  background:rgba(255,255,255,.97);border:1.5px solid #e0e2e8;
+  border-radius:8px;font-size:11.5px;font-weight:500;color:#333;
   box-shadow:0 1px 4px rgba(0,0,0,.07);white-space:nowrap;
 }
-.zlbl.safe{border-color:#22c55e30;background:#f0fdf4;}
-.zdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
-.zpct{font-size:10px;color:#aaa;font-family:'Courier New',monospace;}
+.zdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.zlbl-name{flex:1;}
+.zpct{font-size:10px;font-family:'Courier New',monospace;padding:1px 5px;border-radius:3px;font-weight:600;}
 
-/* ══════════════════════════════════════
-   INFO PANEL (bottom)
-══════════════════════════════════════ */
-#info-panel{
-  flex-shrink:0;background:#fff;border-top:1px solid #e0e2e8;
-  overflow-y:auto;
-}
-/* Desktop: 3-col horizontal */
-.info-inner{
-  padding:14px 16px;display:flex;gap:14px;align-items:stretch;
-}
+/* ── INFO PANEL ── */
+#info-panel{flex-shrink:0;background:#fff;border-top:1px solid #e0e2e8;overflow-y:auto;}
+.info-inner{padding:14px 16px;display:flex;gap:14px;align-items:stretch;}
 
-/* Spec card */
-.spec-card{
-  background:#f8f9fc;border:1px solid #e8eaf0;border-radius:10px;
-  padding:12px 14px;flex-shrink:0;
-}
+.spec-card{background:#f8f9fc;border:1px solid #e8eaf0;border-radius:10px;padding:12px 14px;flex-shrink:0;}
 .spec-plat{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
 .spec-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
 .spec-name{font-size:13px;font-weight:700;color:#111;}
@@ -141,80 +113,46 @@ input[type=file]{display:none;}
 .spec-table td:first-child{font-weight:600;color:#333;padding-right:10px;white-space:nowrap;}
 .spec-table td:last-child{font-family:'Courier New',monospace;color:#5865f2;}
 
-/* Zone breakdown */
 .zone-breakdown{flex:1;min-width:0;}
-.zb-title{font-size:10.5px;font-weight:700;color:#999;text-transform:uppercase;
-  letter-spacing:.06em;margin-bottom:8px;}
+.zb-title{font-size:10.5px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
 .zb-rows{display:flex;flex-direction:column;gap:5px;}
-.zb-row{display:flex;align-items:center;gap:7px;padding:5px 8px;
-  background:#fef2f2;border:1px solid #fecaca;border-radius:6px;flex-wrap:wrap;}
-.zb-row.safe-row{background:#f0fdf4;border-color:#bbf7d0;}
-.zb-rdot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-.zb-label{font-size:11px;font-weight:500;color:#333;flex:1;min-width:100px;}
+.zb-row{display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:6px;border:1px solid transparent;}
+.zb-rdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.zb-label{font-size:11px;font-weight:500;color:#333;flex:1;min-width:80px;}
 .zb-px{font-size:10px;color:#777;font-family:'Courier New',monospace;}
-.zb-pct{font-size:10px;font-weight:600;color:#ef4444;background:#fee2e2;
-  padding:1px 5px;border-radius:3px;white-space:nowrap;margin-left:auto;}
-.zb-pct.safe-pct{color:#16a34a;background:#dcfce7;}
+.zb-pct{font-size:10px;font-weight:700;padding:1px 5px;border-radius:3px;white-space:nowrap;margin-left:auto;}
 
-/* Tips */
 .tips-col{flex-shrink:0;padding:0 0 0 14px;border-left:1px solid #e8eaf0;}
-.tips-title{font-size:10.5px;font-weight:700;color:#999;text-transform:uppercase;
-  letter-spacing:.06em;margin-bottom:8px;}
+.tips-title{font-size:10.5px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
 .tip-item{display:flex;gap:6px;margin-bottom:5px;font-size:11px;color:#555;line-height:1.45;}
 .tip-icon{font-size:11px;flex-shrink:0;margin-top:1px;}
 
-/* ══════════════════════════════════════
-   MOBILE RESPONSIVE  ≤ 600px
-══════════════════════════════════════ */
-@media (max-width: 600px) {
-  .bar-row1{height:50px;padding:0 12px;}
-  .logo-name{font-size:13px;}
+/* ── MOBILE ── */
+@media(max-width:600px){
   .logo-tag{display:none;}
-  .tbtn span.tbtn-label{display:none;} /* hide text, keep icon */
   .bar-row2{padding:0 12px 9px;gap:5px;}
   .ptab{padding:5px 11px;font-size:11.5px;}
-
   #stage{padding:8px 10px;}
   #stage-inner{flex-direction:column;align-items:center;}
-
-  /* Labels go below canvas on mobile */
-  #labels-panel{
-    flex-direction:row;flex-wrap:wrap;justify-content:center;
-    gap:5px;width:100%;
-  }
-  .zlbl{font-size:11px;padding:4px 8px 4px 7px;}
-
-  /* Info panel stacks on mobile */
+  #labels-panel{flex-direction:row;flex-wrap:wrap;justify-content:center;width:100%;}
+  .zlbl{font-size:11px;}
   .info-inner{flex-direction:column;gap:10px;padding:10px 12px;}
   .spec-card{min-width:0;}
-  .tips-col{border-left:none;border-top:1px solid #e8eaf0;
-    padding:10px 0 0;width:100%;}
-  .tips-col .tips-title{margin-top:0;}
-
-  /* 2 cols for tips on mobile */
+  .tips-col{border-left:none;border-top:1px solid #e8eaf0;padding:10px 0 0;width:100%;}
   .tips-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;}
   .tip-item{margin-bottom:0;}
-
   #info-panel{max-height:200px;}
 }
-
-/* ══════════════════════════════════════
-   TABLET  601–900px
-══════════════════════════════════════ */
-@media (min-width:601px) and (max-width:900px) {
+@media(min-width:601px) and (max-width:900px){
   #stage-inner{flex-direction:row;align-items:center;}
-  #labels-panel{flex-direction:column;width:160px;}
+  #labels-panel{flex-direction:column;width:165px;}
   .info-inner{flex-direction:column;gap:10px;}
   .tips-col{border-left:none;border-top:1px solid #e8eaf0;padding:10px 0 0;}
   #info-panel{max-height:180px;}
 }
-
-/* ══════════════════════════════════════
-   DESKTOP  > 900px
-══════════════════════════════════════ */
-@media (min-width:901px) {
+@media(min-width:901px){
   #stage-inner{flex-direction:row;align-items:center;}
-  #labels-panel{flex-direction:column;width:185px;}
+  #labels-panel{flex-direction:column;width:190px;}
   .tips-col{width:200px;}
   #info-panel{max-height:200px;}
 }
@@ -222,7 +160,6 @@ input[type=file]{display:none;}
 </head>
 <body>
 
-<!-- TOP BAR -->
 <div id="bar">
   <div class="bar-row1">
     <div class="logo">
@@ -237,48 +174,49 @@ input[type=file]{display:none;}
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
         </svg>
-        <span class="tbtn-label">Zones</span>
+        <span>Zones</span>
       </button>
       <button class="newbtn" id="btn-new" style="display:none;" onclick="resetFile()">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
           <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/>
-        </svg>
-        New
+        </svg>New
       </button>
-      <label class="upbtn">
+      <!-- Upload button: label wraps hidden input — works on mobile -->
+      <label id="upload-label">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
           <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/>
           <path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/>
         </svg>
         Upload
-        <input type="file" id="fi" accept="image/jpeg,image/png,image/webp,video/mp4,video/webm,video/quicktime"
+        <input type="file" accept="image/jpeg,image/png,image/webp,video/mp4,video/webm,video/quicktime"
           onchange="handleFile(this.files[0]);this.value=''">
       </label>
     </div>
   </div>
-  <!-- Platform tabs scrollable row -->
   <div class="bar-row2" id="ptabs"></div>
 </div>
 
-<!-- BODY -->
 <div id="body">
   <div id="stage">
     <div id="stage-inner">
       <!-- Canvas -->
       <div id="ccard">
         <canvas id="l-media"></canvas>
+        <!-- Drop zone — label covers full area for tap -->
         <div id="dz">
-          <div class="dz-ring">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="1.8">
-              <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/>
-              <path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/>
-            </svg>
-          </div>
-          <p class="dz-t">Tap to upload your creative</p>
-          <p class="dz-s">JPG · PNG · WebP · MP4 · WebM</p>
-          <p class="dz-s" style="margin-top:-5px;">🔒 Stays in your browser</p>
-          <input type="file" accept="image/jpeg,image/png,image/webp,video/mp4,video/webm,video/quicktime"
-            onchange="handleFile(this.files[0]);this.value=''">
+          <label id="dz-label">
+            <input type="file" accept="image/jpeg,image/png,image/webp,video/mp4,video/webm,video/quicktime"
+              onchange="handleFile(this.files[0]);this.value=''">
+            <div class="dz-ring">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.8">
+                <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/>
+                <path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/>
+              </svg>
+            </div>
+            <p class="dz-t">Tap to upload your creative</p>
+            <p class="dz-s">JPG · PNG · WebP · MP4 · WebM</p>
+            <p class="dz-badge">🔒 Everything stays in your browser</p>
+          </label>
         </div>
         <svg id="l-zones" xmlns="http://www.w3.org/2000/svg"></svg>
       </div>
@@ -287,7 +225,6 @@ input[type=file]{display:none;}
     </div>
   </div>
 
-  <!-- Info panel -->
   <div id="info-panel">
     <div class="info-inner" id="info-inner"></div>
   </div>
@@ -296,192 +233,153 @@ input[type=file]{display:none;}
 <script>
 'use strict';
 
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+// ZONE COLOR SYSTEM
+// Each zone type gets a distinct color so designers
+// instantly see what's what — not everything is red
+// ═══════════════════════════════════════════════════════
+const ZONE_COLORS = {
+  // Top UI bars (headers, nav) → Orange/Amber
+  top:    { fill:'rgba(251,146,60,0.42)',  stripe:'rgba(251,100,20,0.16)',  border:'rgba(251,146,60,0.70)',  dot:'#f97316', bg:'#fff7ed', bdr:'#fed7aa', txt:'#c2410c', pctBg:'#ffedd5', pctTxt:'#c2410c' },
+  // Bottom CTA / caption bars → Red/Rose
+  bottom: { fill:'rgba(239,68,68,0.42)',   stripe:'rgba(220,38,38,0.16)',   border:'rgba(239,68,68,0.72)',   dot:'#ef4444', bg:'#fef2f2', bdr:'#fecaca', txt:'#b91c1c', pctBg:'#fee2e2', pctTxt:'#b91c1c' },
+  // Right action icon columns → Purple/Violet
+  right:  { fill:'rgba(139,92,246,0.38)',  stripe:'rgba(109,40,217,0.14)',  border:'rgba(139,92,246,0.68)',  dot:'#8b5cf6', bg:'#f5f3ff', bdr:'#ddd6fe', txt:'#6d28d9', pctBg:'#ede9fe', pctTxt:'#6d28d9' },
+  // Side margins (both sides) → Blue
+  sides:  { fill:'rgba(59,130,246,0.32)',  stripe:'rgba(37,99,235,0.12)',   border:'rgba(59,130,246,0.60)',  dot:'#3b82f6', bg:'#eff6ff', bdr:'#bfdbfe', txt:'#1d4ed8', pctBg:'#dbeafe', pctTxt:'#1d4ed8' },
+  // Safe zone → Green
+  safe:   { dot:'#22c55e', bg:'#f0fdf4', bdr:'#bbf7d0', txt:'#16a34a', pctBg:'#dcfce7', pctTxt:'#15803d' },
+};
+
+// Determine which color to use for a zone
+function zoneColor(z) {
+  if (z.both) return ZONE_COLORS.sides;
+  if (z.h && z.y === 0) return ZONE_COLORS.top;
+  if (z.h && z.y > 0)  return ZONE_COLORS.bottom;
+  if (z.w && (z.x||0) > 0) return ZONE_COLORS.right;
+  return ZONE_COLORS.bottom;
+}
+
+// ═══════════════════════════════════════════════════════
 // PLATFORM DATA
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 const PLATS = [
   {
     id:'ig-stories', label:'IG Stories', color:'#E1306C',
-    W:1080, H:1920, ar:9/16,
-    res:'1080 × 1920 px', ratio:'9:16', safeArea:'1010 × 1280 px',
+    W:1080,H:1920,ar:9/16, res:'1080×1920px', ratio:'9:16', safeArea:'1010×1280px',
     zones:[
       {label:'Profile + Progress Bar', px:'268px', pct:'14%', y:0,    h:268},
       {label:'CTA / Swipe-Up Area',    px:'672px', pct:'35%', y:1248, h:672},
       {label:'Side Margins',           px:'65px',  pct:'6%',  x:0,    w:65, both:true},
     ],
-    tips:[
-      {icon:'👁', text:'Keep all content in central 1010×1280 px'},
-      {icon:'📊', text:'Profile bar eats top 14%'},
-      {icon:'🔗', text:'Swipe-up CTA covers bottom 35%'},
-      {icon:'↔️', text:'6% each side = gesture zones'},
-    ],
+    tips:[{icon:'👁',text:'Keep all content in central 1010×1280 px'},{icon:'📊',text:'Profile bar eats top 14%'},{icon:'🔗',text:'Swipe-up CTA covers bottom 35%'},{icon:'↔️',text:'6% each side = gesture zones'}],
   },
   {
     id:'ig-reels', label:'IG Reels', color:'#E1306C',
-    W:1080, H:1920, ar:9/16,
-    res:'1080 × 1920 px', ratio:'9:16', safeArea:'1010 × 1280 px',
+    W:1080,H:1920,ar:9/16, res:'1080×1920px', ratio:'9:16', safeArea:'1010×1280px',
     zones:[
       {label:'Reels Header',        px:'268px', pct:'14%', y:0,    h:268},
       {label:'Caption + CTA + Nav', px:'672px', pct:'35%', y:1248, h:672},
       {label:'Side Margins',        px:'65px',  pct:'6%',  x:0,    w:65, both:true},
       {label:'Action Icons',        px:'216px', pct:'20%', x:864,  w:216},
     ],
-    tips:[
-      {icon:'🎯', text:'Action icons right 20% — never put logos there'},
-      {icon:'📝', text:'Caption + CTA bar: bottom 35%'},
-      {icon:'⚠️', text:'Boosting Story as Reel? Use stricter zone'},
-      {icon:'💡', text:'Safe: 1010 × 1280 px centered'},
-    ],
+    tips:[{icon:'🎯',text:'Action icons right 20% — no logos there'},{icon:'📝',text:'Bottom 35% = caption + CTA'},{icon:'⚠️',text:'Boosting Story? Use stricter Reels zone'},{icon:'💡',text:'Safe: 1010×1280 px centered'}],
   },
   {
     id:'ig-feed-45', label:'Feed 4:5', color:'#1877F2',
-    W:1080, H:1350, ar:4/5,
-    res:'1080 × 1350 px', ratio:'4:5', safeArea:'1013 × 1135 px',
+    W:1080,H:1350,ar:4/5, res:'1080×1350px', ratio:'4:5', safeArea:'1013×1135px',
     zones:[
-      {label:'Profile Header',     px:'120px', pct:'9%',  y:0,    h:120},
-      {label:'Caption + Actions',  px:'298px', pct:'22%', y:1052, h:298},
-      {label:'Side Margins',       px:'34px',  pct:'3%',  x:0,    w:34, both:true},
+      {label:'Profile Header',    px:'120px', pct:'9%',  y:0,    h:120},
+      {label:'Caption + Actions', px:'298px', pct:'22%', y:1052, h:298},
+      {label:'Side Margins',      px:'34px',  pct:'3%',  x:0,    w:34, both:true},
     ],
-    tips:[
-      {icon:'🖼', text:'4:5 = max feed real estate on mobile'},
-      {icon:'📐', text:'Keep text 34px from each edge'},
-      {icon:'💬', text:'Bottom 22% = caption + action bar'},
-      {icon:'✅', text:'Best ratio for feed ads on Meta'},
-    ],
+    tips:[{icon:'🖼',text:'4:5 = max feed real estate on mobile'},{icon:'📐',text:'Keep text 34px from each edge'},{icon:'💬',text:'Bottom 22% = caption + action bar'},{icon:'✅',text:'Best ratio for feed ads on Meta'}],
   },
   {
     id:'ig-feed-11', label:'Feed 1:1', color:'#1877F2',
-    W:1080, H:1080, ar:1,
-    res:'1080 × 1080 px', ratio:'1:1', safeArea:'810 × 810 px',
+    W:1080,H:1080,ar:1, res:'1080×1080px', ratio:'1:1', safeArea:'810×810px',
     zones:[
-      {label:'Profile Header',   px:'108px', pct:'10%', y:0,   h:108},
-      {label:'Caption + Actions',px:'162px', pct:'15%', y:918, h:162},
-      {label:'Side Margins',     px:'135px', pct:'12.5%',x:0,  w:135, both:true},
+      {label:'Profile Header',    px:'108px', pct:'10%',   y:0,   h:108},
+      {label:'Caption + Actions', px:'162px', pct:'15%',   y:918, h:162},
+      {label:'Side Margins',      px:'135px', pct:'12.5%', x:0,   w:135, both:true},
     ],
-    tips:[
-      {icon:'📦', text:'Classic Instagram square format'},
-      {icon:'🎨', text:'Safe zone: 810 × 810 px center'},
-      {icon:'⚡', text:'Works for feed + carousel ads'},
-      {icon:'📱', text:'Full-width on all mobile screens'},
-    ],
+    tips:[{icon:'📦',text:'Classic Instagram square format'},{icon:'🎨',text:'Safe zone: 810×810 px center'},{icon:'⚡',text:'Works for feed + carousel ads'},{icon:'📱',text:'Full-width on all mobile screens'}],
   },
   {
     id:'tiktok', label:'TikTok', color:'#FE2C55',
-    W:1080, H:1920, ar:9/16,
-    res:'1080 × 1920 px', ratio:'9:16', safeArea:'852 × 1266 px',
+    W:1080,H:1920,ar:9/16, res:'1080×1920px', ratio:'9:16', safeArea:'852×1266px',
     zones:[
       {label:'Navigation Tabs',     px:'270px', pct:'14%', y:0,    h:270},
       {label:'Caption + CTA + Nav', px:'384px', pct:'20%', y:1536, h:384},
       {label:'Action Icons',        px:'228px', pct:'21%', x:852,  w:228},
     ],
-    tips:[
-      {icon:'🚫', text:'Right 21% = icons always — no brand here'},
-      {icon:'📝', text:'Bottom 20% always unsafe — captions vary'},
-      {icon:'🎵', text:'Music disc sits bottom-right'},
-      {icon:'🎯', text:'Keep visuals left-center'},
-    ],
+    tips:[{icon:'🚫',text:'Right 21% = icons always — no brand here'},{icon:'📝',text:'Bottom 20% always unsafe'},{icon:'🎵',text:'Music disc sits bottom-right'},{icon:'🎯',text:'Keep visuals left-center'}],
   },
   {
     id:'snapchat', label:'Snapchat', color:'#FFFC00',
-    W:1080, H:1920, ar:9/16,
-    res:'1080 × 1920 px', ratio:'9:16', safeArea:'1080 × 1382 px',
+    W:1080,H:1920,ar:9/16, res:'1080×1920px', ratio:'9:16', safeArea:'1080×1382px',
     zones:[
       {label:'Brand Header', px:'250px', pct:'13%', y:0,    h:250},
       {label:'Swipe Up CTA', px:'288px', pct:'15%', y:1632, h:288},
     ],
-    tips:[
-      {icon:'👁', text:'Header: brand name + "Ad · 0:05"'},
-      {icon:'⬆️', text:'Swipe-up CTA: bottom 15%'},
-      {icon:'⏱', text:'Avg view 2–3s — hook in safe zone'},
-      {icon:'🟡', text:'Yellow CTA always at bottom'},
-    ],
+    tips:[{icon:'👁',text:'Header: brand name + "Ad · 0:05"'},{icon:'⬆️',text:'Swipe-up CTA: bottom 15%'},{icon:'⏱',text:'Avg view 2–3s — hook in safe zone'},{icon:'🟡',text:'Yellow CTA always at bottom'}],
   },
   {
     id:'yt-shorts', label:'YT Shorts', color:'#FF0000',
-    W:1080, H:1920, ar:9/16,
-    res:'1080 × 1920 px', ratio:'9:16', safeArea:'882 × 1282 px',
+    W:1080,H:1920,ar:9/16, res:'1080×1920px', ratio:'9:16', safeArea:'882×1282px',
     zones:[
       {label:'Shorts Header',         px:'216px', pct:'11%', y:0,    h:216},
       {label:'Channel + Title + Nav', px:'422px', pct:'22%', y:1498, h:422},
       {label:'Action Icons',          px:'198px', pct:'18%', x:882,  w:198},
     ],
-    tips:[
-      {icon:'🚫', text:'Right 18% = Like/Dislike/Comment/Share'},
-      {icon:'📺', text:'"Shorts" logo always top center'},
-      {icon:'👤', text:'Channel + Subscribe: bottom 22%'},
-      {icon:'🛒', text:'Shopping shelf can appear here'},
-    ],
+    tips:[{icon:'🚫',text:'Right 18% = Like/Dislike/Comment/Share'},{icon:'📺',text:'"Shorts" logo always top center'},{icon:'👤',text:'Channel + Subscribe: bottom 22%'},{icon:'🛒',text:'Shopping shelf can appear here'}],
   },
 ];
 
 // ═══════════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════════
-let pid = 'ig-stories';
-let DW = 0, DH = 0;
-let mediaEl = null, isVid = false, murl = null, raf = null;
-let showZ = true;
-const plat = () => PLATS.find(p => p.id === pid);
-
-// Is mobile?
-const isMobile = () => window.innerWidth <= 600;
+let pid='ig-stories', DW=0, DH=0;
+let mediaEl=null, isVid=false, murl=null, raf=null, showZ=true;
+const plat=()=>PLATS.find(p=>p.id===pid);
+const isMobile=()=>window.innerWidth<=600;
 
 // ═══════════════════════════════════════════════════
-// SIZING — adapts to screen size
+// SIZING
 // ═══════════════════════════════════════════════════
-function calcSize() {
-  const stage = document.getElementById('stage');
-  const pl = plat();
-  const mob = isMobile();
-
-  let avW, avH;
-  if (mob) {
-    // Mobile: full width minus padding, leave room for labels below
-    avW = Math.min(stage.clientWidth - 20, 300);
-    avH = Math.min(stage.clientHeight - 80, 520);
-  } else if (window.innerWidth <= 900) {
-    // Tablet
-    avW = Math.min(stage.clientWidth - 190, 280);
-    avH = Math.min(stage.clientHeight - 30, 560);
-  } else {
-    // Desktop
-    avW = Math.min(stage.clientWidth - 220, 300);
-    avH = Math.min(stage.clientHeight - 30, 620);
-  }
-
-  if (avW / avH > pl.ar) { DH = Math.max(avH, 80); DW = Math.floor(DH * pl.ar); }
-  else { DW = Math.max(avW, 60); DH = Math.floor(DW / pl.ar); }
+function calcSize(){
+  const stage=document.getElementById('stage');
+  const pl=plat(); const mob=isMobile(); const tabW=window.innerWidth;
+  let avW,avH;
+  if(mob){avW=Math.min(stage.clientWidth-20,300);avH=Math.min(stage.clientHeight-80,520);}
+  else if(tabW<=900){avW=Math.min(stage.clientWidth-185,280);avH=Math.min(stage.clientHeight-30,560);}
+  else{avW=Math.min(stage.clientWidth-215,300);avH=Math.min(stage.clientHeight-30,620);}
+  if(avW/avH>pl.ar){DH=Math.max(avH,100);DW=Math.floor(DH*pl.ar);}
+  else{DW=Math.max(avW,80);DH=Math.floor(DW/pl.ar);}
 }
-
-function applySize() {
+function applySize(){
   calcSize();
-  const card = document.getElementById('ccard');
-  card.style.width = DW + 'px';
-  card.style.height = DH + 'px';
-  const mc = document.getElementById('l-media');
-  mc.width = DW; mc.height = DH;
-  mc.style.cssText = `display:block;width:${DW}px;height:${DH}px;`;
-  const zs = document.getElementById('l-zones');
-  zs.setAttribute('width', DW); zs.setAttribute('height', DH);
-  zs.setAttribute('viewBox', `0 0 ${DW} ${DH}`);
-  zs.style.cssText = `position:absolute;inset:0;width:${DW}px;height:${DH}px;pointer-events:none;`;
+  const card=document.getElementById('ccard');
+  card.style.width=DW+'px'; card.style.height=DH+'px';
+  const mc=document.getElementById('l-media');
+  mc.width=DW; mc.height=DH;
+  mc.style.cssText=`display:block;width:${DW}px;height:${DH}px;`;
+  const zs=document.getElementById('l-zones');
+  zs.setAttribute('width',DW); zs.setAttribute('height',DH);
+  zs.setAttribute('viewBox',`0 0 ${DW} ${DH}`);
+  zs.style.cssText=`position:absolute;inset:0;width:${DW}px;height:${DH}px;pointer-events:none;`;
 }
 
 // ═══════════════════════════════════════════════════
 // PLATFORM TABS
 // ═══════════════════════════════════════════════════
-function buildTabs() {
-  const wrap = document.getElementById('ptabs');
-  wrap.innerHTML = '';
-  PLATS.forEach(p => {
-    const b = document.createElement('button');
-    b.className = 'ptab' + (p.id === pid ? ' on' : '');
-    b.textContent = p.label;
-    if (p.id === pid) {
-      b.style.cssText = `border-color:${p.color}55;background:${p.color}0e;color:${p.color};
-        border-radius:20px;border-width:1.5px;font-weight:700;`;
-    }
-    b.onclick = () => { pid = p.id; buildTabs(); rebuild(); };
+function buildTabs(){
+  const wrap=document.getElementById('ptabs'); wrap.innerHTML='';
+  PLATS.forEach(p=>{
+    const b=document.createElement('button'); b.className='ptab'+(p.id===pid?' on':'');
+    b.textContent=p.label;
+    if(p.id===pid) b.style.cssText=`border-color:${p.color}55;background:${p.color}0e;color:${p.color};border-radius:20px;border-width:1.5px;font-weight:700;`;
+    b.onclick=()=>{pid=p.id;buildTabs();rebuild();};
     wrap.appendChild(b);
   });
 }
@@ -489,154 +387,175 @@ function buildTabs() {
 // ═══════════════════════════════════════════════════
 // TOGGLE
 // ═══════════════════════════════════════════════════
-function toggleZones() {
-  showZ = !showZ;
-  document.getElementById('btn-z').classList.toggle('on', showZ);
-  renderZones();
-  renderLabels();
+function toggleZones(){
+  showZ=!showZ;
+  document.getElementById('btn-z').classList.toggle('on',showZ);
+  renderZones(); renderLabels();
 }
 
 // ═══════════════════════════════════════════════════
 // FILE HANDLING
 // ═══════════════════════════════════════════════════
-const dzEl = document.getElementById('dz');
-dzEl.addEventListener('dragover', e => { e.preventDefault(); dzEl.classList.add('drag'); });
-dzEl.addEventListener('dragleave', () => dzEl.classList.remove('drag'));
-dzEl.addEventListener('drop', e => {
-  e.preventDefault(); dzEl.classList.remove('drag');
-  if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+// Drag & drop on the dz div
+const dzEl=document.getElementById('dz');
+dzEl.addEventListener('dragover',e=>{e.preventDefault();dzEl.style.background='#1c1930';});
+dzEl.addEventListener('dragleave',()=>{dzEl.style.background='#18181c';});
+dzEl.addEventListener('drop',e=>{
+  e.preventDefault(); dzEl.style.background='#18181c';
+  if(e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
 });
 
-function handleFile(file) {
-  if (!file) return;
-  if (murl) URL.revokeObjectURL(murl);
-  if (raf) cancelAnimationFrame(raf);
-  murl = URL.createObjectURL(file);
-  isVid = file.type.startsWith('video/');
-  dzEl.style.display = 'none';
-  document.getElementById('btn-new').style.display = 'flex';
-  if (isVid) {
-    const v = document.createElement('video');
-    v.src=murl; v.muted=true; v.loop=true; v.playsInline=true; v.autoplay=true;
-    v.onloadeddata = () => { mediaEl=v; v.play(); renderAll(); };
+function handleFile(file){
+  if(!file) return;
+  if(murl) URL.revokeObjectURL(murl);
+  if(raf) cancelAnimationFrame(raf);
+  murl=URL.createObjectURL(file); isVid=file.type.startsWith('video/');
+  dzEl.style.display='none';
+  document.getElementById('btn-new').style.display='flex';
+  if(isVid){
+    const v=document.createElement('video');
+    v.src=murl;v.muted=true;v.loop=true;v.playsInline=true;v.autoplay=true;
+    v.onloadeddata=()=>{mediaEl=v;v.play();renderAll();};
   } else {
-    const img = new Image();
-    img.onload = () => { mediaEl=img; renderAll(); };
-    img.src = murl;
+    const img=new Image();
+    img.onload=()=>{mediaEl=img;renderAll();};
+    img.src=murl;
   }
 }
-
-function resetFile() {
-  if (raf) cancelAnimationFrame(raf);
-  if (mediaEl && isVid) mediaEl.pause();
-  if (murl) URL.revokeObjectURL(murl);
-  mediaEl=null; murl=null; isVid=false;
-  dzEl.style.display = 'flex';
-  document.getElementById('btn-new').style.display = 'none';
+function resetFile(){
+  if(raf) cancelAnimationFrame(raf); raf=null;
+  if(mediaEl&&isVid) mediaEl.pause();
+  if(murl) URL.revokeObjectURL(murl);
+  mediaEl=null;murl=null;isVid=false;
+  dzEl.style.display='flex';
+  document.getElementById('btn-new').style.display='none';
   document.getElementById('l-media').getContext('2d').clearRect(0,0,DW,DH);
   renderAll();
 }
-
-function drawMedia() {
-  const ctx = document.getElementById('l-media').getContext('2d');
+function drawMedia(){
+  const ctx=document.getElementById('l-media').getContext('2d');
   ctx.clearRect(0,0,DW,DH);
-  if (mediaEl) { try { ctx.drawImage(mediaEl,0,0,DW,DH); } catch(e){} }
+  if(mediaEl){try{ctx.drawImage(mediaEl,0,0,DW,DH);}catch(e){}}
 }
 
 // ═══════════════════════════════════════════════════
-// SAFE ZONE SVG
+// SAFE ZONE SVG — each zone gets its own color
 // ═══════════════════════════════════════════════════
-function se(tag, a={}) {
-  const e = document.createElementNS('http://www.w3.org/2000/svg', tag);
-  Object.entries(a).forEach(([k,v]) => e.setAttribute(k,v));
-  return e;
+function se(tag,a={}){
+  const e=document.createElementNS('http://www.w3.org/2000/svg',tag);
+  Object.entries(a).forEach(([k,v])=>e.setAttribute(k,v)); return e;
 }
 
-function renderZones() {
-  const svg = document.getElementById('l-zones');
-  svg.innerHTML = '';
-  if (!showZ || !mediaEl) return;
-  const pl = plat();
-  const scX = DW/pl.W, scY = DH/pl.H;
+function drawZoneRect(svg,x,y,w,h,col,patId){
+  svg.appendChild(se('rect',{x,y,width:w,height:h,fill:col.fill}));
+  svg.appendChild(se('rect',{x,y,width:w,height:h,fill:`url(#${patId})`}));
+  svg.appendChild(se('rect',{x,y,width:w,height:h,fill:'none',stroke:col.border,'stroke-width':'1.5'}));
+}
 
-  const defs = se('defs');
-  const pat = se('pattern',{id:'sp',patternUnits:'userSpaceOnUse',width:'11',height:'11',patternTransform:'rotate(45)'});
-  const ln = se('line',{x1:'0',y1:'0',x2:'0',y2:'11',stroke:'rgba(255,55,55,0.18)','stroke-width':'7'});
-  pat.appendChild(ln); defs.appendChild(pat); svg.appendChild(defs);
+function renderZones(){
+  const svg=document.getElementById('l-zones'); svg.innerHTML='';
+  if(!showZ||!mediaEl) return;
+  const pl=plat(); const scX=DW/pl.W, scY=DH/pl.H;
 
-  let sTop=0, sBot=0, sLeft=0, sRight=0;
+  // Create one stripe pattern per color
+  const defs=se('defs'); svg.appendChild(defs);
+  const colorKeys=['top','bottom','right','sides'];
+  colorKeys.forEach(key=>{
+    const c=ZONE_COLORS[key];
+    const pat=se('pattern',{id:'pat-'+key,patternUnits:'userSpaceOnUse',width:'12',height:'12',patternTransform:'rotate(45)'});
+    const ln=se('line',{x1:'0',y1:'0',x2:'0',y2:'12',stroke:c.stripe.replace('0.16','0.22'),'stroke-width':'7'});
+    pat.appendChild(ln); defs.appendChild(pat);
+  });
 
-  pl.zones.forEach(z => {
-    if (z.both) {
-      const lw = z.w*scX;
-      [[0,lw],[DW-lw,lw]].forEach(([rx,rw]) => {
-        svg.appendChild(se('rect',{x:rx,y:0,width:rw,height:DH,fill:'rgba(239,65,65,0.40)'}));
-        svg.appendChild(se('rect',{x:rx,y:0,width:rw,height:DH,fill:'url(#sp)'}));
-        svg.appendChild(se('rect',{x:rx,y:0,width:rw,height:DH,fill:'none',stroke:'rgba(239,68,68,0.55)','stroke-width':'1.2'}));
-      });
-      sLeft = Math.max(sLeft,lw); sRight = sLeft;
+  let sTop=0,sBot=0,sLeft=0,sRight=0;
+
+  pl.zones.forEach(z=>{
+    const col=zoneColor(z);
+    const patKey=z.both?'sides':z.h&&z.y===0?'top':z.h&&z.y>0?'bottom':'right';
+    if(z.both){
+      const lw=z.w*scX;
+      drawZoneRect(svg,0,0,lw,DH,col,'pat-'+patKey);
+      drawZoneRect(svg,DW-lw,0,lw,DH,col,'pat-'+patKey);
+      sLeft=Math.max(sLeft,lw); sRight=sLeft;
     } else {
       const x=(z.x||0)*scX, y=(z.y||0)*scY;
       const w=z.w?z.w*scX:DW, h=z.h?z.h*scY:DH;
-      svg.appendChild(se('rect',{x,y,width:w,height:h,fill:'rgba(239,65,65,0.42)'}));
-      svg.appendChild(se('rect',{x,y,width:w,height:h,fill:'url(#sp)'}));
-      svg.appendChild(se('rect',{x,y,width:w,height:h,fill:'none',stroke:'rgba(239,68,68,0.58)','stroke-width':'1.2'}));
+      drawZoneRect(svg,x,y,w,h,col,'pat-'+patKey);
       if(!z.x&&z.y===0&&z.h) sTop=Math.max(sTop,h);
       if(!z.x&&z.y>0&&z.h)   sBot=Math.max(sBot,DH-y);
       if(!z.y&&z.x>0&&z.w)   sRight=Math.max(sRight,DW-x);
     }
   });
 
+  // Safe zone dashed border — green
   svg.appendChild(se('rect',{
     x:sLeft+1,y:sTop+1,width:DW-sLeft-sRight-2,height:DH-sTop-sBot-2,
-    fill:'none',stroke:'rgba(255,255,255,0.72)',
-    'stroke-width':'1.5','stroke-dasharray':'8 5'
+    fill:'rgba(34,197,94,0.04)',
+    stroke:'rgba(34,197,94,0.75)',
+    'stroke-width':'1.8','stroke-dasharray':'9 5'
   }));
 }
 
 // ═══════════════════════════════════════════════════
-// ZONE LABELS — simple list (no absolute positioning)
+// ZONE LABELS — colored to match their zone
 // ═══════════════════════════════════════════════════
-function renderLabels() {
-  const panel = document.getElementById('labels-panel');
-  panel.innerHTML = '';
-  if (!mediaEl) return;
+function renderLabels(){
+  const panel=document.getElementById('labels-panel'); panel.innerHTML='';
+  if(!mediaEl) return;
+  const pl=plat();
 
-  const pl = plat();
-  const scY = DH/pl.H, scX = DW/pl.W;
-
-  // Unsafe zones (skip both-side margins for label)
-  pl.zones.forEach(z => {
-    if (z.both) return;
-    const lbl = document.createElement('div');
-    lbl.className = 'zlbl';
-    lbl.innerHTML = `<span class="zdot" style="background:#ef4444;"></span>
-      <span>${z.label}</span>
-      <span class="zpct">${z.pct}</span>`;
+  pl.zones.forEach(z=>{
+    if(z.both) return; // don't duplicate side margins in labels
+    const col=zoneColor(z);
+    const lbl=document.createElement('div');
+    lbl.className='zlbl';
+    lbl.style.borderColor=col.bdr;
+    lbl.style.background=col.bg;
+    lbl.innerHTML=`
+      <span class="zdot" style="background:${col.dot};"></span>
+      <span class="zlbl-name" style="color:${col.txt};">${z.label}</span>
+      <span class="zpct" style="background:${col.pctBg};color:${col.pctTxt};">${z.pct}</span>`;
     panel.appendChild(lbl);
   });
 
-  // Safe zone
-  const safe = document.createElement('div');
-  safe.className = 'zlbl safe';
-  safe.innerHTML = `<span class="zdot" style="background:#22c55e;"></span>
-    <span style="color:#16a34a;font-weight:600;">Safe Zone</span>
-    <span class="zpct" style="color:#16a34a;">${pl.safeArea}</span>`;
+  // Show side margins if present
+  const sideZ=pl.zones.find(z=>z.both);
+  if(sideZ){
+    const col=ZONE_COLORS.sides;
+    const lbl=document.createElement('div');
+    lbl.className='zlbl';
+    lbl.style.borderColor=col.bdr;
+    lbl.style.background=col.bg;
+    lbl.innerHTML=`
+      <span class="zdot" style="background:${col.dot};"></span>
+      <span class="zlbl-name" style="color:${col.txt};">${sideZ.label}</span>
+      <span class="zpct" style="background:${col.pctBg};color:${col.pctTxt};">${sideZ.pct}</span>`;
+    panel.appendChild(lbl);
+  }
+
+  // Safe zone label
+  const col=ZONE_COLORS.safe;
+  const safe=document.createElement('div');
+  safe.className='zlbl';
+  safe.style.borderColor=col.bdr;
+  safe.style.background=col.bg;
+  safe.innerHTML=`
+    <span class="zdot" style="background:${col.dot};"></span>
+    <span class="zlbl-name" style="font-weight:600;color:${col.txt};">Safe Zone</span>
+    <span class="zpct" style="background:${col.pctBg};color:${col.pctTxt};font-family:'Courier New',monospace;">${pl.safeArea}</span>`;
   panel.appendChild(safe);
 }
 
 // ═══════════════════════════════════════════════════
 // INFO PANEL
 // ═══════════════════════════════════════════════════
-function renderInfoPanel() {
-  const pl = plat();
-  const container = document.getElementById('info-inner');
-  container.innerHTML = '';
+function renderInfoPanel(){
+  const pl=plat();
+  const container=document.getElementById('info-inner'); container.innerHTML='';
 
   // Spec card
-  const spec = document.createElement('div');
-  spec.className = 'spec-card';
-  spec.innerHTML = `
+  const spec=document.createElement('div'); spec.className='spec-card';
+  spec.innerHTML=`
     <div class="spec-plat">
       <span class="spec-dot" style="background:${pl.color};"></span>
       <span class="spec-name">${pl.label}</span>
@@ -650,46 +569,46 @@ function renderInfoPanel() {
   container.appendChild(spec);
 
   // Zone breakdown
-  const zb = document.createElement('div');
-  zb.className = 'zone-breakdown';
+  const zb=document.createElement('div'); zb.className='zone-breakdown';
   let sTop=0,sBot=0,sLeft=0,sRight=0;
-  pl.zones.forEach(z => {
-    if(!z.x&&z.y===0&&z.h)  sTop=Math.max(sTop,z.h);
-    if(!z.x&&z.y>0&&z.h)    sBot=Math.max(sBot,pl.H-z.y);
-    if(!z.y&&z.x>0&&z.w)    sRight=Math.max(sRight,pl.W-z.x);
-    if(z.both&&z.w)          {sLeft=z.w;sRight=Math.max(sRight,z.w);}
+  pl.zones.forEach(z=>{
+    if(!z.x&&z.y===0&&z.h) sTop=Math.max(sTop,z.h);
+    if(!z.x&&z.y>0&&z.h)   sBot=Math.max(sBot,pl.H-z.y);
+    if(!z.y&&z.x>0&&z.w)   sRight=Math.max(sRight,pl.W-z.x);
+    if(z.both&&z.w){sLeft=z.w;sRight=Math.max(sRight,z.w);}
   });
-  const safeH=pl.H-sTop-sBot, safeW=pl.W-sLeft-sRight;
-  const safePct=Math.round(safeW*safeH/(pl.W*pl.H)*100);
-
-  zb.innerHTML = `<div class="zb-title">Zone Breakdown</div><div class="zb-rows" id="zbr"></div>`;
+  const safePct=Math.round((pl.W-sLeft-sRight)*(pl.H-sTop-sBot)/(pl.W*pl.H)*100);
+  zb.innerHTML=`<div class="zb-title">Zone Breakdown</div><div class="zb-rows" id="zbr"></div>`;
   container.appendChild(zb);
-  const zbr = zb.querySelector('#zbr');
+  const zbr=zb.querySelector('#zbr');
 
-  pl.zones.forEach(z => {
-    const row = document.createElement('div');
-    row.className = 'zb-row';
-    const area = z.both ? `${z.px} each side` : z.px;
-    row.innerHTML = `<span class="zb-rdot" style="background:#ef4444;"></span>
-      <span class="zb-label">${z.label}</span>
+  pl.zones.forEach(z=>{
+    const col=zoneColor(z);
+    const row=document.createElement('div'); row.className='zb-row';
+    row.style.background=col.bg; row.style.borderColor=col.bdr;
+    const area=z.both?`${z.px} each side`:z.px;
+    row.innerHTML=`
+      <span class="zb-rdot" style="background:${col.dot};"></span>
+      <span class="zb-label" style="color:${col.txt};">${z.label}</span>
       <span class="zb-px">${area}</span>
-      <span class="zb-pct">${z.pct}</span>`;
+      <span class="zb-pct" style="background:${col.pctBg};color:${col.pctTxt};">${z.pct}</span>`;
     zbr.appendChild(row);
   });
 
-  const safeRow = document.createElement('div');
-  safeRow.className = 'zb-row safe-row';
-  safeRow.innerHTML = `<span class="zb-rdot" style="background:#22c55e;"></span>
-    <span class="zb-label" style="color:#16a34a;font-weight:600;">Safe Zone</span>
-    <span class="zb-px" style="color:#16a34a;">${pl.safeArea}</span>
-    <span class="zb-pct safe-pct">${safePct}%</span>`;
+  const safeCol=ZONE_COLORS.safe;
+  const safeRow=document.createElement('div'); safeRow.className='zb-row';
+  safeRow.style.background=safeCol.bg; safeRow.style.borderColor=safeCol.bdr;
+  safeRow.innerHTML=`
+    <span class="zb-rdot" style="background:${safeCol.dot};"></span>
+    <span class="zb-label" style="font-weight:600;color:${safeCol.txt};">Safe Zone</span>
+    <span class="zb-px" style="color:${safeCol.txt};">${pl.safeArea}</span>
+    <span class="zb-pct" style="background:${safeCol.pctBg};color:${safeCol.pctTxt};">${safePct}%</span>`;
   zbr.appendChild(safeRow);
 
   // Tips
-  const tips = document.createElement('div');
-  tips.className = 'tips-col';
-  const mob = isMobile();
-  tips.innerHTML = `<div class="tips-title">💡 Design Tips</div>
+  const tips=document.createElement('div'); tips.className='tips-col';
+  const mob=isMobile();
+  tips.innerHTML=`<div class="tips-title">💡 Design Tips</div>
     <div class="${mob?'tips-grid':''}">
       ${pl.tips.map(t=>`<div class="tip-item"><span class="tip-icon">${t.icon}</span><span>${t.text}</span></div>`).join('')}
     </div>`;
@@ -699,29 +618,22 @@ function renderInfoPanel() {
 // ═══════════════════════════════════════════════════
 // RENDER + REBUILD
 // ═══════════════════════════════════════════════════
-function renderAll() {
-  if (!isVid) drawMedia();
-  if (isVid && mediaEl && !raf) {
-    const loop = () => { drawMedia(); raf = requestAnimationFrame(loop); };
-    raf = requestAnimationFrame(loop);
+function renderAll(){
+  if(!isVid) drawMedia();
+  if(isVid&&mediaEl&&!raf){
+    const loop=()=>{drawMedia();raf=requestAnimationFrame(loop);};
+    raf=requestAnimationFrame(loop);
   }
-  renderZones();
-  renderLabels();
-  renderInfoPanel();
+  renderZones(); renderLabels(); renderInfoPanel();
 }
-
-function rebuild() {
-  applySize();
-  renderAll();
-}
+function rebuild(){ applySize(); renderAll(); }
 
 // ═══════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════
-buildTabs();
-renderInfoPanel();
-window.addEventListener('resize', () => { setTimeout(rebuild, 50); });
-setTimeout(rebuild, 60);
+buildTabs(); renderInfoPanel();
+window.addEventListener('resize',()=>setTimeout(rebuild,50));
+setTimeout(rebuild,60);
 </script>
 </body>
 </html>
