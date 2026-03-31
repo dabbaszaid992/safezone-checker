@@ -611,11 +611,14 @@ function renderZones(){
       sRight=Math.max(sRight,DW-zx);
 
     }else if(z.cornerBox){
-      // Bottom-right corner box only — intersection of right column + bottom zone
-      // Exactly where the action icons live in the reference screenshot
+      // Bottom-right corner: right column × bottom zone overlap — purple fill
       const zx=(z.x||0)*scX, zw=z.w*scX;
       const startY=(z.startY||0)*scY;
-      drawRect(svg, zx, startY, zw, DH-startY, ZC.right, 'p-right');
+      const col2=ZC.right;
+      // Draw directly — solid fill + stripe + border
+      svg.appendChild(se('rect',{x:zx,y:startY,width:zw,height:DH-startY,fill:col2.fill}));
+      svg.appendChild(se('rect',{x:zx,y:startY,width:zw,height:DH-startY,fill:'url(#p-right)'}));
+      svg.appendChild(se('rect',{x:zx,y:startY,width:zw,height:DH-startY,fill:'none',stroke:col2.border,'stroke-width':'1.5'}));
       sRight=Math.max(sRight, DW-zx);
 
     }else{
