@@ -400,7 +400,7 @@ const PLATS=[
      {label:'Reels Header',px:'268px',pct:'14%',y:0,h:268},
      {label:'Caption + CTA + Nav',px:'672px',pct:'35%',y:1248,h:672},
      {label:'Side Margins',px:'65px',pct:'6%',x:0,w:65,both:true},
-     {label:'Action Icons',px:'216px',pct:'20%',x:864,w:216,partialRight:true,stopY:1248},
+     {label:'Action Icons',px:'216px',pct:'20%',x:864,w:216,partialRight:true,startY:268,stopY:1248},
    ],
    tips:[{i:'🎯',t:'Right 20% = action icons — never put logos there'},{i:'📝',t:'Bottom 35% = caption + CTA bar'},{i:'⚠️',t:'Boosting Story as Reel? Use stricter zone'},{i:'💡',t:'Safe area: 1010×1280 px centered'}],
   },
@@ -611,11 +611,12 @@ function renderZones(){
       sRight=Math.max(sRight,DW-zx);
 
     }else if(z.partialRight){
-      // Right column overlay: only from top down to where bottom zone starts
-      // Stops at the red line (safe zone bottom boundary) — not full height
+      // Right column overlay: only from end of top zone to start of bottom zone
+      // startY = bottom of top unsafe zone (14%), stopY = top of bottom unsafe zone (red line)
       const zx=(z.x||0)*scX, zw=z.w*scX;
-      const stopY=(z.stopY||0)*scY;  // stop at bottom of safe zone
-      drawRect(svg, zx, 0, zw, stopY, ZC.right, 'p-right');
+      const startY=(z.startY||0)*scY;
+      const stopY=(z.stopY||0)*scY;
+      drawRect(svg, zx, startY, zw, stopY-startY, ZC.right, 'p-right');
       sRight=Math.max(sRight, DW-zx);
 
     }else{
