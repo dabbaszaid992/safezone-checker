@@ -400,7 +400,7 @@ const PLATS=[
      {label:'Reels Header',px:'268px',pct:'14%',y:0,h:268},
      {label:'Caption + CTA + Nav',px:'672px',pct:'35%',y:1248,h:672},
      {label:'Side Margins',px:'65px',pct:'6%',x:0,w:65,both:true},
-     {label:'Action Icons',px:'216px',pct:'20%',x:864,w:216},
+     {label:'Action Icons',px:'216px',pct:'20%',x:864,w:216,noFill:true},
    ],
    tips:[{i:'🎯',t:'Right 20% = action icons — never put logos there'},{i:'📝',t:'Bottom 35% = caption + CTA bar'},{i:'⚠️',t:'Boosting Story as Reel? Use stricter zone'},{i:'💡',t:'Safe area: 1010×1280 px centered'}],
   },
@@ -605,6 +605,11 @@ function renderZones(){
         drawRect(svg,zx+zw*0.06,sy,zw*0.88,sh,col,'p-right',rx);
       });
       sRight=Math.max(sRight,DW-zx);
+    }else if(z.noFill){
+      // No overlay drawn — just update sRight so safe zone border notches inward
+      const zx=(z.x||0)*scX;
+      sRight=Math.max(sRight,DW-zx);
+
     }else{
       const x=(z.x||0)*scX, y=(z.y||0)*scY;
       const w=z.w?z.w*scX:DW, h=z.h?z.h*scY:DH;
