@@ -400,7 +400,7 @@ const PLATS=[
      {label:'Reels Header',px:'268px',pct:'14%',y:0,h:268},
      {label:'Caption + CTA + Nav',px:'672px',pct:'35%',y:1248,h:672},
      {label:'Side Margins',px:'65px',pct:'6%',x:0,w:65,both:true},
-     {label:'Action Icons',px:'216px',pct:'20%',x:864,w:216,cornerBox:true,startY:1248},
+     {label:'Action Icons',px:'216px',pct:'20%',x:864,w:216,midRight:true,startY:268,stopY:1248},
    ],
    tips:[{i:'🎯',t:'Right 20% = action icons — never put logos there'},{i:'📝',t:'Bottom 35% = caption + CTA bar'},{i:'⚠️',t:'Boosting Story as Reel? Use stricter zone'},{i:'💡',t:'Safe area: 1010×1280 px centered'}],
   },
@@ -610,15 +610,16 @@ function renderZones(){
       const zx=(z.x||0)*scX;
       sRight=Math.max(sRight,DW-zx);
 
-    }else if(z.cornerBox){
-      // Bottom-right corner: right column × bottom zone overlap — purple fill
+    }else if(z.midRight){
+      // Middle of right column only: from end of top zone → start of bottom zone
+      // startY=268 (14% top), stopY=1248 (35% bottom starts)
       const zx=(z.x||0)*scX, zw=z.w*scX;
       const startY=(z.startY||0)*scY;
+      const stopY=(z.stopY||0)*scY;
       const col2=ZC.right;
-      // Draw directly — solid fill + stripe + border
-      svg.appendChild(se('rect',{x:zx,y:startY,width:zw,height:DH-startY,fill:col2.fill}));
-      svg.appendChild(se('rect',{x:zx,y:startY,width:zw,height:DH-startY,fill:'url(#p-right)'}));
-      svg.appendChild(se('rect',{x:zx,y:startY,width:zw,height:DH-startY,fill:'none',stroke:col2.border,'stroke-width':'1.5'}));
+      svg.appendChild(se('rect',{x:zx,y:startY,width:zw,height:stopY-startY,fill:col2.fill}));
+      svg.appendChild(se('rect',{x:zx,y:startY,width:zw,height:stopY-startY,fill:'url(#p-right)'}));
+      svg.appendChild(se('rect',{x:zx,y:startY,width:zw,height:stopY-startY,fill:'none',stroke:col2.border,'stroke-width':'1.5'}));
       sRight=Math.max(sRight, DW-zx);
 
     }else{
