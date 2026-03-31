@@ -396,20 +396,11 @@ const PLATS=[
   },
   {id:'ig-reels',label:'IG Reels',color:'#E1306C',logoKey:'instagram',
    W:1080,H:1920,ar:9/16,res:'1080×1920px',ratio:'9:16',safeArea:'1010×1280px',
-   rulerMode:true,
-   // Official Instagram measurements for 9:16 Reels ads
-   rulers:[
-     {pos:'top',    pct:'14%', val:268,  axis:'y', from:'top'},
-     {pos:'bottom', pct:'35%', val:672,  axis:'y', from:'bottom'},
-     {pos:'right',  pct:'21%', val:228,  axis:'x', from:'right'},
-     {pos:'left',   pct:'6%',  val:65,   axis:'x', from:'left'},
-     {pos:'left2',  pct:'6%',  val:65,   axis:'x', from:'right2'},
-   ],
    zones:[
      {label:'Reels Header',px:'268px',pct:'14%',y:0,h:268},
      {label:'Caption + CTA + Nav',px:'672px',pct:'35%',y:1248,h:672},
      {label:'Side Margins',px:'65px',pct:'6%',x:0,w:65,both:true},
-     {label:'Action Icons',px:'216px',pct:'21%',x:852,w:228,reelRight:true},
+     {label:'Action Icons',px:'216px',pct:'20%',x:864,w:216},
    ],
    tips:[{i:'🎯',t:'Right 20% = action icons — never put logos there'},{i:'📝',t:'Bottom 35% = caption + CTA bar'},{i:'⚠️',t:'Boosting Story as Reel? Use stricter zone'},{i:'💡',t:'Safe area: 1010×1280 px centered'}],
   },
@@ -453,8 +444,7 @@ const PLATS=[
    zones:[
      {label:'Shorts Header',px:'216px',pct:'11%',y:0,h:216},
      {label:'Channel + Title + Nav',px:'422px',pct:'22%',y:1498,h:422},
-     {label:'Action Icons',px:'198px',pct:'18%',x:882,w:198,iconSpots:true,
-      spots:[{y:260,h:170},{y:460,h:170},{y:660,h:170},{y:860,h:170},{y:1060,h:160}]},
+     {label:'Action Icons',px:'198px',pct:'18%',x:882,w:198},
    ],
    tips:[{i:'🚫',t:'Right 18% = Like/Dislike/Comment/Share'},{i:'📺',t:'"Shorts" logo always top center'},{i:'👤',t:'Channel + Subscribe: bottom 22%'},{i:'🛒',t:'Shopping shelf can appear here'}],
   },
@@ -587,12 +577,6 @@ function renderZones(){
   if(!showZ||!mediaEl) return;
   const pl=plat(); const scX=DW/pl.W, scY=DH/pl.H;
 
-  // ── RULER MODE (IG Reels) — no fill overlays, just dimension lines ──
-  if(pl.rulerMode){
-    drawRulerMode(svg, pl, scX, scY);
-    return;
-  }
-
   // ── STANDARD MODE — colored overlays ──
   const defs=se('defs'); svg.appendChild(defs);
   ['top','bottom','right','sides'].forEach(k=>{
@@ -621,9 +605,6 @@ function renderZones(){
         drawRect(svg,zx+zw*0.06,sy,zw*0.88,sh,col,'p-right',rx);
       });
       sRight=Math.max(sRight,DW-zx);
-    }else if(z.reelRight){
-      const zx=(z.x||0)*scX;
-      sRight=Math.max(sRight,DW-zx);
     }else{
       const x=(z.x||0)*scX, y=(z.y||0)*scY;
       const w=z.w?z.w*scX:DW, h=z.h?z.h*scY:DH;
@@ -639,126 +620,6 @@ function renderZones(){
     fill:'rgba(34,197,94,0.03)',stroke:'rgba(34,197,94,0.72)',
     'stroke-width':'1.8','stroke-dasharray':'9 5'
   }));
-}
-
-// ── RULER MODE RENDERER ───────────────────────────────────────────────────────
-// Matches the official Instagram safe zone diagram:
-// clean image, thin gray border showing safe zone, small % labels with tick marks
-function drawRulerMode(svg, pl, scX, scY){
-  const lc = 'rgba(80,80,90,0.75)';   // line color — dark gray
-  const tc = '#3a3a4a';               // text color
-  const fs = Math.max(9, Math.min(13, DW * 0.038)); // font size
-  const tick = 6;                     // tick mark size px
-  const gap  = 8;                     // gap between canvas edge and label
-
-  // Safe zone pixel values (native)
-  const topH   = 268;  // 14% top
-  const botH   = 672;  // 35% bottom  (so bottom starts at 1920-672=1248)
-  const sideW  = 65;   // 6% each side
-  const rightW = 228;  // 21% right (action icons)
-
-  // Scaled to display
-  const dTop   = topH  * scY;
-  const dBot   = botH  * scY;
-  const dSide  = sideW * scX;
-  const dRight = rightW* scX;
-
-  // Safe zone rect
-  const sx = dSide;
-  const sy = dTop;
-  const sw = DW - dSide - dRight;
-  const sh = DH - dTop - dBot;
-
-  // ── 1. Safe zone border — thin solid gray line (like the screenshot)
-  svg.appendChild(se('rect',{
-    x:sx, y:sy, width:sw, height:sh,
-    fill:'none',
-    stroke:'rgba(60,60,70,0.55)',
-    'stroke-width':'1.2',
-    'stroke-dasharray':'none'
-  }));
-
-  // ── 2. Dimension lines + labels outside the canvas ──────────────────
-
-  function hLabel(text, x, y, align='middle'){
-    const t = se('text',{
-      x, y,
-      'text-anchor': align,
-      'dominant-baseline':'middle',
-      fill: tc,
-      'font-size': fs,
-      'font-family':'Inter,system-ui,sans-serif',
-      'font-weight':'500'
-    });
-    t.textContent = text;
-    svg.appendChild(t);
-  }
-
-  function tickH(x1,y,x2){ // horizontal tick pair
-    svg.appendChild(se('line',{x1,y1:y,x2:x1,y2:y+tick,stroke:lc,'stroke-width':'1.2'}));
-    svg.appendChild(se('line',{x1:x2,y1:y,x2,y2:y+tick,stroke:lc,'stroke-width':'1.2'}));
-    svg.appendChild(se('line',{x1,y1:y+tick/2,x2,y2:y+tick/2,stroke:lc,'stroke-width':'1'}));
-  }
-  function tickV(x,y1,y2){ // vertical tick pair
-    svg.appendChild(se('line',{x1:x,y1,x2:x+tick,y2:y1,stroke:lc,'stroke-width':'1.2'}));
-    svg.appendChild(se('line',{x1:x,y1:y2,x2:x+tick,y2,stroke:lc,'stroke-width':'1.2'}));
-    svg.appendChild(se('line',{x1:x+tick/2,y1,x2:x+tick/2,y2,stroke:lc,'stroke-width':'1'}));
-  }
-
-  // ── TOP: 14% ──
-  // Bracket above canvas showing top unsafe zone height
-  const tBracketY = -18;
-  // Left tick at x=dSide, right tick at x=DW-dRight
-  // Vertical line from canvas top to safe zone top, on the right side
-  const rightEdgeX = DW - dRight + 18;
-  svg.appendChild(se('line',{x1:rightEdgeX,y1:0,x2:rightEdgeX,y2:sy,
-    stroke:lc,'stroke-width':'1'}));
-  svg.appendChild(se('line',{x1:rightEdgeX-tick,y1:0,x2:rightEdgeX+tick,y2:0,
-    stroke:lc,'stroke-width':'1.2'}));
-  svg.appendChild(se('line',{x1:rightEdgeX-tick,y1:sy,x2:rightEdgeX+tick,y2:sy,
-    stroke:lc,'stroke-width':'1.2'}));
-  hLabel('14%', rightEdgeX+gap+fs*1.2, sy/2, 'start');
-
-  // ── BOTTOM: 35% or 40% ──
-  const botStartY = DH - dBot;
-  const leftEdgeX = dSide - 18;
-  svg.appendChild(se('line',{x1:leftEdgeX,y1:botStartY,x2:leftEdgeX,y2:DH,
-    stroke:lc,'stroke-width':'1'}));
-  svg.appendChild(se('line',{x1:leftEdgeX-tick,y1:botStartY,x2:leftEdgeX+tick,y2:botStartY,
-    stroke:lc,'stroke-width':'1.2'}));
-  svg.appendChild(se('line',{x1:leftEdgeX-tick,y1:DH,x2:leftEdgeX+tick,y2:DH,
-    stroke:lc,'stroke-width':'1.2'}));
-  hLabel('35%', leftEdgeX-gap-fs*1.2, botStartY+(DH-botStartY)/2, 'end');
-
-  // ── RIGHT: 21% (action icons) ──
-  // Horizontal bracket below canvas
-  const botBracketY = DH + 18;
-  svg.appendChild(se('line',{x1:DW-dRight,y1:botBracketY,x2:DW,y2:botBracketY,
-    stroke:lc,'stroke-width':'1'}));
-  svg.appendChild(se('line',{x1:DW-dRight,y1:botBracketY-tick,x2:DW-dRight,y2:botBracketY+tick,
-    stroke:lc,'stroke-width':'1.2'}));
-  svg.appendChild(se('line',{x1:DW,y1:botBracketY-tick,x2:DW,y2:botBracketY+tick,
-    stroke:lc,'stroke-width':'1.2'}));
-  hLabel('21%', DW-dRight+(dRight/2), botBracketY+gap+fs, 'middle');
-
-  // ── LEFT SIDE: 6% ──
-  const topBracketY = -18;
-  svg.appendChild(se('line',{x1:0,y1:topBracketY,x2:dSide,y2:topBracketY,
-    stroke:lc,'stroke-width':'1'}));
-  svg.appendChild(se('line',{x1:0,y1:topBracketY-tick,x2:0,y2:topBracketY+tick,
-    stroke:lc,'stroke-width':'1.2'}));
-  svg.appendChild(se('line',{x1:dSide,y1:topBracketY-tick,x2:dSide,y2:topBracketY+tick,
-    stroke:lc,'stroke-width':'1.2'}));
-  hLabel('6%', dSide/2, topBracketY-gap-fs, 'middle');
-
-  // ── RIGHT SIDE margin: 6% ──
-  svg.appendChild(se('line',{x1:DW-dSide,y1:topBracketY,x2:DW,y2:topBracketY,
-    stroke:lc,'stroke-width':'1'}));
-  svg.appendChild(se('line',{x1:DW-dSide,y1:topBracketY-tick,x2:DW-dSide,y2:topBracketY+tick,
-    stroke:lc,'stroke-width':'1.2'}));
-  svg.appendChild(se('line',{x1:DW,y1:topBracketY-tick,x2:DW,y2:topBracketY+tick,
-    stroke:lc,'stroke-width':'1.2'}));
-  hLabel('6%', DW-dSide/2, topBracketY-gap-fs, 'middle');
 }
 
 
